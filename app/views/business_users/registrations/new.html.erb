@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <body style="padding-top: 72px;">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "business_users/shared/error_messages", resource: resource %>
+    <section class="py-5">
+      <div class="container">
+
+          <div class="row form-block">
+            <div class="col-lg-4">
+              <h4>基本情報</h4>
+            </div>
+
+            <div class="col-lg-7 ms-auto">
+              <div class="mb-4">
+                
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <%= f.label :name, "ユーザ名", class: "form-label" %><br />
+                      <%= f.text_field :name, class:"form-control"  %>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 氏 + 名-->
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :family_name, "氏", class:"form-label" %><br />
+                    <%= f.text_field :family_name, class:"form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :first_name, "名", class: "form-label" %><br />
+                    <%= f.text_field :first_name, class:"form-control"  %>
+                  </div>
+                </div>
+              </div>
+
+              <!-- シ + メイ-->
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :family_name_kana, "氏(ふりがな)", class: "form-label" %><br />
+                    <%= f.text_field :family_name_kana, class:"form-control"  %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :first_name_kana, "名(ふりがな)", class: "form-label" %><br />
+                    <%= f.text_field :first_name_kana, class:"form-control"  %>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TEL -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :tel, "電話番号", class: "form-label" %><br />
+                    <%= f.telephone_field :tel, class:"form-control"  %>
+                  </div>
+                </div>
+              </div>
+                <%= f.label :email, "メールアドレス", class:"form-label" %><br />
+                <%= f.email_field :email, class:"form-control"  %>
+              </div>
+
+            <div class="row">
+              <div class="mb-4">
+                <div class="btn-group btn-group-toggle d-flex mb-3" data-toggle="buttons">
+                  <label class="btn btn-light flex-fill mr-2 active">
+                    <%= f.radio_button :sex, :woman, class: "form-check-input" %>
+                    <label class="form-check-label">女性</label>
+                  </label>
+                  <label class="btn btn-light flex-fill">
+                    <%= f.radio_button :sex, :man, class: "form-check-input" %>
+                    <label class="form-check-label">男性</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :birth, "生年月日", class:"form-label" %>
+                    <%= f.date_field :birth, class:"form-control" %>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row form-block">
+            <div class="col-lg-4">
+              <h4>住所</h4>
+              <p class="text-muted text-sm">Re I beautyは現在関東圏ユーザーの方のみご登録頂けます。（エリアは今後拡大予定）</p>
+            </div>
+
+            <div class="col-lg-7 ms-auto">
+              <!-- ZIP Code-->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :postal_code, "郵便番号", class:"form-label" %><br>
+                    <%= f.text_field :postal_code, class:"form-control"%>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 都道府県 -->
+              <div class="mb-4">
+                <%= f.label :prefecture_code, "都道府県", class:"form-label"%><br>
+                <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :code, :name, {}, class:"form-select form-control" %>
+              </div>
+
+              <!-- City + State-->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :city, "市区町村", class:"form-label" %><br>
+                    <%= f.text_field :city, class:"form-control"%>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Street-->
+              <div class="mb-4">
+                <%= f.label :street, "以降の住所", class:"form-label" %><br>
+                <%= f.text_field :street, class:"form-control" %>
+              </div>
+
+              <!-- 最寄り駅 
+              <div class="mb-4">
+                <label class="form-label" for="form_station">最寄り駅</label>
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>最寄りの駅を選択</option>
+                  <option value="1">新宿</option>
+                  <option value="2">代々木</option>
+                  <option value="3">渋谷</option>
+                </select>
+              <div> -->
+
+            </div>
+          </div>
+      </div>
+    </section>
+    
+    <section class="py-5">
+      <div class="container">
+          <div class="row form-block">
+            <div class="col-lg-4">
+              <h4>登録する施術カテゴリ</h4>
+              <p class="text-muted text-sm">登録する施術カテゴリを右の一覧から選択してください。</p>
+            </div>
+            <div class="col-lg-7 ms-auto">
+              <div class="mb-4">
+
+
+                <ul class="list-inline mb-0">
+                  <li class="list-inline-item">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="amenities_0" name="amenities[]">
+                      <label class="form-check-label text-muted" for="amenities_0">ネイル    </label>
+                    </div>
+                  </li>
+                  <li class="list-inline-item">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="amenities_1" name="amenities[]">
+                      <label class="form-check-label text-muted" for="amenities_1">ネイル店舗    </label>
+                    </div>
+                  </li>
+                  <li class="list-inline-item">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="amenities_2" name="amenities[]">
+                      <label class="form-check-label text-muted" for="amenities_2">メイク    </label>
+                    </div>
+                  </li>
+                  <li class="list-inline-item">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="amenities_3" name="amenities[]">
+                      <label class="form-check-label text-muted" for="amenities_3">着付け    </label>
+                    </div>
+                  </li>
+                  <li class="list-inline-item">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="amenities_4" name="amenities[]">
+                      <label class="form-check-label text-muted" for="amenities_4">ヘッドスパ    </label>
+                    </div>
+                  </li>
+                  <li class="list-inline-item">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="amenities_13" name="amenities[]">
+                      <label class="form-check-label text-muted" for="amenities_13">カッピング/鍼    </label>
+                    </div>
+                  </li>
+                  <li class="list-inline-item">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="amenities_14" name="amenities[]">
+                      <label class="form-check-label text-muted" for="amenities_14">ヘアメイク    </label>
+                    </div>
+                  </li>
+                  <li class="list-inline-item">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="amenities_14" name="amenities[]">
+                      <label class="form-check-label text-muted" for="amenities_14">小顔    </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <section class="py-5">
+      <div class="container">
+          <div class="row form-block">
+            <div class="col-lg-4">
+              <h4>パスワード</h4>
+              <p class="text-muted text-sm">仮登録の完了後、ログインに使用します。</p>
+            </div>
+            <div class="col-lg-7 ms-auto">
+              <div class="mb-4">
+                <div class="field">
+                  <%= f.label :password, "パスワードを入力", class:"form-label" %>
+                  <% if @minimum_password_length %>
+                  <em class="form-label">(<%= @minimum_password_length %>文字以上で設定)</em>
+                  <% end %><br />
+                  <%= f.password_field :password, autocomplete: "new-password", class:"form-control" %>
+                </div>
+
+                <div class="mb-4 field">
+                  <%= f.label :password_confirmation, "パスワード確認", class:"form-label" %><br />
+                  <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"form-control" %>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <section class="py-5">
+      <div class="container">
+        <div class="row form-block">
+          <div class="col-lg-4">
+            <h4>プロフィール写真</h4>
+            <p class="text-muted text-sm">あなたの顔写真を登録してください。</p>
+          </div>
+
+          <div class="col-lg-7 ms-auto">
+            <div class="mb-4">         
+                <%= f.file_field :image, id: :business_user_img %>
+                <%= image_pack_tag "default_user_image.png", id: :img_prev, class:"avatar avatar-xxl p-2 mb-2" %>
+                    <script type="text/javascript">
+                    $(function() {
+                      function readURL(input) {
+                          if (input.files && input.files[0]) {
+                          var reader = new FileReader();
+                          reader.onload = function (e) {
+                      $('#img_prev').attr('src', e.target.result);
+                          }
+                          reader.readAsDataURL(input.files[0]);
+                          }
+                      }
+                      $("#business_user_img").change(function(){
+                          readURL(this);
+                      });
+                    });
+                  </script>
+            </div>
+
+            <div class="d-none" id="dropzoneTemplate">
+              <div class="dz-preview dz-file-preview">
+                <div class="dz-image"><img data-dz-thumbnail="" alt="" src="img/logo-square.svg"></div>
+                <div class="dz-details">
+                  <div class="dz-filename"><span data-dz-name=""></span></div>
+                  <div class="dz-size" data-dz-size=""></div>
+                </div>
+                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
+                <div class="dz-success-mark"><span class="dz-icon"><i class="fa-check fa"></i></span></div>
+                <div class="dz-error-mark"><span class="dz-icon"><i class="fa-times fa"></i></span></div>
+                <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row form-block flex-column flex-sm-row">
+          <div class="col text-center text-sm-start"><a class="btn btn-link text-muted" href="/"> <i class="fa-chevron-left fa me-2"></i>トップへ戻る</a>
+          </div>
+          <div class="col text-center text-sm-end actions">
+            <%= f.submit "仮登録/面接申請を完了", class:"btn btn-primary text-secondary" %>
+
+          </div>
+
+          <% end %>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+    <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+  </body>
+</html>
+

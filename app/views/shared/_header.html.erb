@@ -1,0 +1,61 @@
+<!-- Navbar-->
+      <nav class="navbar navbar-expand-lg fixed-top shadow navbar-light bg-primary">
+        <div class="container-fluid">
+          <div class="d-flex align-items-center"><%= link_to image_pack_tag("media/images/logo.svg", alt:"Re I beauty"), "/", class:"navbar-brand py-1"%>
+          </div>
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+          
+          <!-- Navbar Collapse -->
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle " id="docsDropdownMenuLink" href="/posts" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   カテゴリ</a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="docsDropdownMenuLink">
+                  <a class="dropdown-item" href="/posts">ネイル</a><a class="dropdown-item" href="/pages/faq2">ネイル (店舗)</a> <a class="dropdown-item" href="/pages/faq1">メイク</a><a class="dropdown-item" href="/pages/faq2">ヘアメイク</a> <a class="dropdown-item" href="/pages/faq1">カッピング/鍼</a><a class="dropdown-item" href="/pages/faq2">小顔</a><a class="dropdown-item" href="/pages/faq1">着付け</a>
+                </div>
+              </li>
+
+              <li class="nav-item"><a class="nav-link" href="/pages/how2use">ご利用方法</a>
+              </li>
+
+              <li class="nav-item"><a class="nav-link" href="/pages/pricing">Re I beautyの料金</a>
+              </li>
+
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle " id="docsDropdownMenuLink" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   FAQs</a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="docsDropdownMenuLink">
+                  <a class="dropdown-item" href="/pages/faq1">ユーザーの方へ</a><a class="dropdown-item" href="/pages/faq2">施術者の方へ</a>
+                </div>
+              </li>
+              
+              <% if user_signed_in? %>
+              <!-- ユーザーとしてログインしている時 -->
+                  <li class="nav-item"><%= link_to 'ログアウト', destroy_user_session_path, method: "delete", class:"nav-link" %></li>
+                  <li class="nav-item"><%= link_to 'マイページ',  mypage_path, class:"nav-link" %></li>
+              <% else %>
+              <!-- ユーザーとしてログインしていない時 -->
+                  <li class="nav-item"><%= link_to 'サインアップ', new_user_registration_path, class:"nav-link" %></li>
+                  <li class="nav-item"><%= link_to 'ログイン', new_user_session_path, class:"nav-link" %></li>
+              <% end %>
+
+              <% if business_user_signed_in? %>
+              <!-- 施術者としてログインしている時 -->
+                  <li class="nav-item"><%= link_to '施術者ログアウト', destroy_business_user_session_path, method: "delete", class:"nav-link" %></li>
+                  <li class="nav-item"><%= link_to '施術者マイページ', buser_mypage_path, class:"nav-link" %></li>
+                  <li class="nav-item"><%= link_to 'メニューを登録', new_post_path, class:"nav-link" %></li>
+              <% else %>
+              <!-- 施術者としてログインしていない時 -->
+                  <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle active text-secondary" id="homeDropdownMenuLink" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    施術者の方はこちら</a>
+                  <li class="nav-item mt-3 mt-lg-0 ms-lg-3 d-lg-none d-xl-inline-block">
+                    <div class="dropdown-menu" aria-labelledby="homeDropdownMenuLink">
+                      <a class="dropdown-item" href="/pages/business_user_register">施術者登録</a>
+                      <%= link_to '施術者ログイン', new_business_user_session_path, class:"dropdown-item" %>
+                  </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      

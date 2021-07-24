@@ -1,0 +1,2 @@
+$("#favorite_<%= @post.id %>").html("<%= j(render partial: 'favorites/favorite', locals: { post: @post }) %>");
+  <!-- ｊ メソッドで、JSとして認識してくれて、非同期で更新してくれる -->

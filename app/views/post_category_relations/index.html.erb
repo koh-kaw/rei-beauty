@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Post Category Relations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Post</th>
+      <th>Category</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @post_category_relations.each do |post_category_relation| %>
+      <tr>
+        <td><%= post_category_relation.post_id %></td>
+        <td><%= post_category_relation.category_id %></td>
+        <td><%= link_to 'Show', post_category_relation %></td>
+        <td><%= link_to 'Edit', edit_post_category_relation_path(post_category_relation) %></td>
+        <td><%= link_to 'Destroy', post_category_relation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Post Category Relation', new_post_category_relation_path %>

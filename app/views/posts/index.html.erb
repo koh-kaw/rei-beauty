@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+  <body style="padding-top: 72px;">
+    <div class="container-fluid py-5 px-lg-5">
+      <div class="row border-bottom mb-4">
+        <div class="col-12">
+          <h1 class="display-4 mb-4">Menus</h1>
+        </div>
+      </div>
+
+      <%= form_with url: search_path, method: :get, local: true do |f| %>
+
+      <div class="row">
+        <div class="col-lg-3 pt-3">
+          <form class="pr-xl-3" action="#">
+            <div class="mb-4">
+              <label class="form-label" for="form_search">キーワード</label>
+              <div class="input-label-absolute input-label-absolute-right">
+                <%= f.text_field :keyword, value: @keyword, class:"form-control pr-4" %>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label" for="form_neighbourhood">施術を受けるエリア</label>
+                <h6>東京都</h6>
+            </div>
+
+            <div class="mb-4">
+              <%= form_with model: @post do |f| %>
+                <%= f.label :title, '施術カテゴリ', class: "form-label" %>
+                <ul class="list-unstyled mb-4">
+                  <li>
+                    <div class="custom-control custom-checkbox">
+                      <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) do |category| %> 
+                        <%= category.label class: "form-check-label text-muted" do %>
+                          <div class="form-check">   
+                            <%= category.check_box class: "form-check-input" %>
+                            <%= category.text %>
+                          </div>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </li>
+                </ul>
+              <% end %>
+                <div class="mb-4">
+                  <%= f.submit "検索 🔍", class:"btn btn-primary text-secondary" %>
+                <% end %>
+              </div>
+            </div>
+          </form>
+        </div>
+    
+
+        <div class="col-lg-9">
+          <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-4">
+            <div class="mr-3">
+              <p class="mb-3 mb-md-0"><strong><% @posts.length %></strong> 件のメニューが見つかりました。</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <% @posts.each do |post| %>
+            <!-- venue item-->
+            <div class="col-sm-6 col-xl-4 mb-5 hover-animate" data-marker-id="59c0c8e33b1527bfe2abaf92">
+              <div class="card h-100 border-0 shadow">
+              
+                <div class="card-img-top overflow-hidden dark-overlay bg-cover" style="min-height: 200px;">
+
+                  <%= link_to image_pack_tag("logo.png", class:"card-img-top overflow-hidden dark-overlay bg-cover", style: "min-height: 200px;"), "/posts/#{post.id}", class:"title-link" %>
+
+                  <div class="card-img-overlay-bottom z-index-20">
+                    <h4 class="text-white text-shadow"><%= link_to(post.content, "/posts/#{post.id}") %></h4>
+                    <p class="mb-2 text-xs"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-gray-300">                    </i>
+                    </p>
+                  </div>
+
+                  <div class="card-img-overlay-top d-flex justify-content-between align-items-center">
+                    <div class="badge badge-transparent badge-pill px-3 py-2">カテゴリ名</div><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
+                      <svg class="svg-icon text-white">
+                        <use xlink:href="#heart-1"> </use>
+                      </svg></a>
+                  </div>
+                </div>
+
+                <div class="card-body">
+                  <p class="text-sm text-muted mb-3"> <%= link_to(post.content, "/posts/#{post.id}") %></p>
+                  <p class="text-sm text-muted text-uppercase mb-1">By <a href="/posts" class="text-dark">施術者ユーザー名</a></p>
+                  <p class="text-sm mb-0"><a class="mr-1" href="/posts">施術者のページを見る</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <% end %>
+          </div>
+          
+
+
+
+          <!-- Pagination -->
+          <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-template d-flex justify-content-center">
+              <li class="page-item"><a class="page-link" href="#"> <i class="fa fa-angle-left"></i></a></li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#"> <i class="fa fa-angle-right"></i></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+    <!-- Price Slider-->
+    <script>
+      var snapSlider = document.getElementById('slider-snap');
+      
+      noUiSlider.create(snapSlider, {
+          start: [ 40, 110 ],
+          snap: false,
+          connect: true,
+          step: 1,
+          range: {
+              'min': 40,
+              'max': 110
+          }
+      });
+      var snapValues = [
+          document.getElementById('slider-snap-value-from'),
+          document.getElementById('slider-snap-value-to')
+      ];
+      var inputValues = [
+          document.getElementById('slider-snap-input-from'),
+          document.getElementById('slider-snap-input-to')
+      ];
+      snapSlider.noUiSlider.on('update', function( values, handle ) {
+          snapValues[handle].innerHTML = values[handle];
+          inputValues[handle].value = values[handle];
+      })
+    </script>
+  </body>
+</html>

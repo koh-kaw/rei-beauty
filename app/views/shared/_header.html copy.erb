@@ -1,0 +1,141 @@
+<!-- Navbar-->
+      <nav class="navbar navbar-expand-lg fixed-top shadow navbar-light bg-primary">
+        <div class="container-fluid">
+
+          <div class="d-flex align-items-center"><%= link_to image_pack_tag("media/images/logo.svg", alt:"Re I beauty"), "#", class:"navbar-brand py-1"%>
+
+          </div>
+
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+          <!-- Navbar Collapse -->
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <form class="form-inline mt-4 mb-2 d-sm-none" action="#" id="searchcollapsed">
+              <div class="input-label-absolute input-label-absolute-left w-100">
+                <label class="label-absolute" for="searchcollapsed_search"><i class="fa fa-search"></i><span class="sr-only">キーワードを入力</span></label>
+                <input class="form-control form-control-sm border-0 shadow-0 bg-gray-200" id="searchcollapsed_search" placeholder="Search" aria-label="Search" type="search">
+              </div>
+            </form>
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle active" id="homeDropdownMenuLink" href="index.html" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   カテゴリ</a>
+                <div class="dropdown-menu" aria-labelledby="homeDropdownMenuLink"><a class="dropdown-item" href="index.html">Rooms</a><a class="dropdown-item" href="index-2.html">Restaurants</a><a class="dropdown-item" href="index-3.html">Travel</a><a class="dropdown-item" href="index-4.html">Real Estate <span class="badge badge-info-light ms-1 mt-n1">New</span></a></div>
+              </li>
+
+              <!-- Megamenu-->
+              <li class="nav-item dropdown position-static"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">ご利用方法</a>
+                <div class="dropdown-menu megamenu py-lg-0">
+                  <div class="row">
+                    <div class="col-lg-9">
+                      <div class="row p-3 pe-lg-0 ps-lg-5 pt-lg-5">
+                        <div class="col-lg-3">
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">Homepage</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="index.html">Rooms   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="index-2.html">Restaurants   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="index-3.html">Travel   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="index-4.html">Real estate <span class="badge badge-info-light ms-1">New</span>   </a></li>
+                          </ul>
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">Host</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-add-0.html">Add new listing - 6 pages   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-list.html">Bookings &mdash; list view   </a></li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-3">
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">User</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-profile.html">Profile   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-account.html">Account   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-personal.html">Personal info - forms   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-security.html">Password & security - forms   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="login.html">Sign in   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="signup.html">Sign up   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-booking-1.html">Booking process - 4 pages   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-grid.html">Bookings &mdash; grid view   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-booking-detail.html">Booking detail   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-invoice.html">Invoice  <span class="badge badge-info-light ms-1">New</span>   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-messages.html">Messages <span class="badge badge-info-light ms-1">New</span>   </a></li>
+                            <li class="megamenu-list-item"><a class="megamenu-list-link" href="user-messages-detail.html">Message Detail  <span class="badge badge-info-light ms-1">New</span>   </a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="row megamenu-services d-none d-lg-flex ps-lg-5">
+                        <div class="col-xl-3 col-lg-6 d-flex">
+                          <div class="megamenu-services-item">
+                            <svg class="svg-icon megamenu-services-icon">
+                              <use xlink:href="#destination-map-1"> </use>
+                            </svg>
+                            <div>
+                              <h6 class="text-uppercase">Best rentals</h6>
+                              <p class="mb-0 text-muted text-sm">Find the perfect place</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 d-flex">
+                          <div class="megamenu-services-item">
+                            <svg class="svg-icon megamenu-services-icon">
+                              <use xlink:href="#money-box-1"> </use>
+                            </svg>
+                            <div>
+                              <h6 class="text-uppercase">Earn points</h6>
+                              <p class="mb-0 text-muted text-sm">And get great rewards</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 d-flex">
+                          <div class="megamenu-services-item">
+                            <svg class="svg-icon megamenu-services-icon">
+                              <use xlink:href="#customer-support-1"> </use>
+                            </svg>
+                            <div>
+                              <h6 class="text-uppercase">020-800-456-747</h6>
+                              <p class="mb-0 text-muted text-sm">24/7 Available Support</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 d-flex">
+                          <div class="megamenu-services-item">
+                            <svg class="svg-icon megamenu-services-icon">
+                              <use xlink:href="#secure-payment-1"> </use>
+                            </svg>
+                            <div>
+                              <h6 class="text-uppercase">Secure Payment</h6>
+                              <p class="mb-0 text-muted text-sm">Secure Payment</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 d-none d-lg-block position-relative"><img class="bg-image" src="img/photo/photo-1521170665346-3f21e2291d8b.jpg" alt=""></div>
+                  </div>
+                </div>
+              </li>
+              <!-- /Megamenu end-->
+
+              <li class="nav-item"><a class="nav-link" href="/pages/pricing">Re I beautyの料金</a>
+              </li>
+
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle " id="docsDropdownMenuLink" href="index.html" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   FAQs</a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="docsDropdownMenuLink">
+                  <a class="dropdown-item" href="/pages/faq1">ユーザーの方へ</a><a class="dropdown-item" href="/pages/faq2">施術者の方へ</a>
+                </div>
+              </li>
+
+
+              <% if user_signed_in? %>
+                <%= link_to 'プロフィール変更', edit_user_registration_path　%>
+                <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
+              <% else %>
+                <li class="nav-item"><%= link_to 'サインアップ', new_user_registration_path, class:"nav-link" %></li>
+                <li class="nav-item"><%= link_to 'ログイン', new_user_session_path, class:"nav-link" %></li>
+              <% end %>
+
+              <li class="nav-item mt-3 mt-lg-0 ms-lg-3 d-lg-none d-xl-inline-block"><a class="btn btn-secondary" href="user-add-0.html">施術者登録</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>

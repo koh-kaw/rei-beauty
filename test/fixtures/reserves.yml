@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  post: one
+  start_date: 2021-07-21 09:58:21
+  end_date: 2021-07-21 09:58:21
+  price: 
+  state: MyString
+
+two:
+  user: two
+  post: two
+  start_date: 2021-07-21 09:58:21
+  end_date: 2021-07-21 09:58:21
+  price: 
+  state: MyString

@@ -1,0 +1,2 @@
+module PostCategoryRelationsHelper
+end

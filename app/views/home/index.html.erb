@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+  
+  <body style="padding-top: 72px;">
+    <section class="hero-home align-items-center gradient-overlay d-flex" style="background-image:url(<%= asset_pack_path 'media/images/background.jpg' %>); background-size: cover" ></div>
+      <div class="container py-6 py-md-7 text-white z-index-20">
+        <div class="row">
+          <div class="col-xl-10">
+
+            <div class="text-center text-lg-start">
+              <p class="subtitle letter-spacing-4 mb-2 text-dark text-shadow">Re I beauty</p>
+              <h1 class="display-3 fw-bold text-dark text-shadow">あなたのお家がサロンになる</h1>
+            </div>
+
+
+            <div class="search-bar mt-5 p-3 p-lg-1 ps-lg-4">
+              <%= form_with url: search_path, method: :get, local: true do |f| %>
+                <div class="row">
+                  <div class="col-lg-4 d-flex align-items-center form-group">
+                    <%= f.text_field :keyword, value: @keyword, class:"form-control border-0 shadow-0", placeholder:"キーワードを入力" %>
+                  </div>
+
+                  <div class="col-lg-3 d-flex align-items-center form-group">
+                    <div class="input-label-absolute input-label-absolute-right w-100">
+                      <label class="label-absolute" for="location"><i class="fa fa-crosshairs"></i><span class="sr-only">City</span></label>
+                      <input class="form-control border-0 shadow-0" type="text" name="location" placeholder="場所" id="location">
+                    </div>
+                  </div>
+
+                  <div class="col-lg-3 d-flex align-items-center form-group no-divider">
+                    <%= f.collection_select(:category_ids, Category.all, :id, :name, {prompt: "カテゴリ"}, {class: "selectpicker"}) do |category| %> 
+                      <%= category.label class: "form-label text-muted" do %>
+                        <%= category.text %>
+                      <% end %>
+                    <% end %>
+                  </div>
+
+                  <div class="col-lg-2 d-grid">
+                    <%= f.submit "検索 🔍", class:"btn btn-primary text-secondary rounded-pill h-100" %>
+                    <% end %>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-6 bg-gray-100">
+      <div class="container">
+        <div class="text-center pb-lg-4">
+          <p class="subtitle text-secondary">How To Use</p>
+          <h2 class="mb-5">ご利用の流れ</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 mb-3 mb-lg-0 text-center">
+            <div class="px-0 px-lg-3">
+
+              <%= image_pack_tag "media/images/illustration/undraw_Confirmed_re_sef7.svg", class: "img-fluid mb-4 ms-auto", alt: "", style: "width: 20%;"%>
+                
+              <h3 class="h5">施術を予約</h3>
+              <p class="text-muted">希望の条件に合うメニューを提供する施術者を探し、施術を予約をします。</p>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3 mb-lg-0 text-center">
+            <div class="px-0 px-lg-3">
+            
+                <%= image_pack_tag "media/images/illustration/undraw_makeup_artist_rxn8.svg", class: "img-fluid mb-4 ms-auto", alt: "", style: "width: 25%;" %>
+
+              <h3 class="h5">施術をスタート</h3>
+              <p class="text-muted">施術者がご指定の場所に訪問し、施術を開始します。 ご自宅、ホテル等、リラックスできる場所でお楽しみください。</p>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3 mb-lg-0 text-center">
+            <div class="px-0 px-lg-3">
+
+            <%= image_pack_tag "media/images/illustration/undraw_Credit_card_payments_re_qboh.svg", class: "img-fluid mb-4 ms-auto", alt: "", style: "width: 35%;" %>
+
+              <h3 class="h5">施術終了・決済</h3>
+              <p class="text-muted">施術費用の決済を行います。 施術に満足されたらぜひレビューにご協力ください。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="py-6">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md-8">
+            <p class="subtitle text-secondary">Ranking</p>
+            <h2>施術メニューランキング</h2>
+          </div>
+          <div class="col-md-4 d-lg-flex align-items-center justify-content-end"><a class="text-muted text-sm" href="/posts/index">
+               一覧で見る<i class="fas fa-angle-double-right ms-2"></i></a></div>
+        </div>
+        <div class="swiper-container guides-slider mx-n2 pt-3">
+
+          <!-- Additional required wrapper-->
+          <div class="swiper-wrapper pb-5">
+            <!-- Slides-->
+            <div class="swiper-slide h-auto px-2">
+              <div class="card card-poster gradient-overlay hover-animate mb-4 mb-lg-0"><a class="tile-link" href="/pages/category"></a><%= image_pack_tag 'photo/new-york.jpg', class: "bg-image", alt: "Card image"%>
+                <div class="card-body overlay-content">
+                  <h6 class="card-title text-shadow text-uppercase">新宿区</h6>
+                  <p class="card-text text-sm">The big apple</p>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide h-auto px-2">
+              <div class="card card-poster gradient-overlay hover-animate mb-4 mb-lg-0"><a class="tile-link" href="category.html"></a><%= image_pack_tag 'photo/paris.jpg', class: "bg-image", alt: "Card image"%>
+                <div class="card-body overlay-content">
+                  <h6 class="card-title text-shadow text-uppercase">渋谷区</h6>
+                  <p class="card-text text-sm">Artist capital of Europe</p>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide h-auto px-2">
+              <div class="card card-poster gradient-overlay hover-animate mb-4 mb-lg-0"><a class="tile-link" href="category.html"></a><%= image_pack_tag 'photo/barcelona.jpg', class: "bg-image", alt: "Card image"%>
+                <div class="card-body overlay-content">
+                  <h6 class="card-title text-shadow text-uppercase">千代田区</h6>
+                  <p class="card-text text-sm">Dalí, Gaudí, Barrio Gotico</p>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide h-auto px-2">
+              <div class="card card-poster gradient-overlay hover-animate mb-4 mb-lg-0"><a class="tile-link" href="category.html"></a><%= image_pack_tag 'photo/prague.jpg', class: "bg-image", alt: "Card image"%>
+                <div class="card-body overlay-content">
+                  <h6 class="card-title text-shadow text-uppercase">港区</h6>
+                  <p class="card-text text-sm">City of hundred towers</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination d-md-none"> </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Divider Section-->
+    <section class="py-7 position-relative dark-overlay"><%= image_pack_tag 'photo/photo-1497436072909-60f360e1d4b1.jpg', class: "bg-image", alt: ""%>
+      <div class="container">
+        <div class="overlay-content text-white py-lg-5">
+          <h3 class="display-3 fw-bold text-shadow mb-5">施術者として登録しませんか？</h3><a class="btn btn-light" href="/pages/business_user_register">Get started</a>
+        </div>
+      </div>
+    </section>
+
+
+      <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+    <!-- Swiper Carousel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+  </body>
+</html>
