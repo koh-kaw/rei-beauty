@@ -172,6 +172,28 @@
       
     </section>
 
+
+<div class="card col-sm-10 mx-auto mt-5 px-0">
+  <div class="card-header bg-white">
+    <h2>アカウント情報</h2>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-8">
+        <!-- 略 -->
+      </div>
+      <div class="col-sm-4">
+        <!-- アバターファイルの表示 -->
+        <div class="d-flex flex-column">
+          <%= image_tag current_user.profile.avatar.to_s, :class => "float-center border mb-2 mx-auto" %>
+            編集
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     <!-- JavaScript files-->
     <script>
       // ------------------------------------------------------- //

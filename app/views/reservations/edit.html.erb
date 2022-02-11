@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+
+  <body style="padding-top: 72px;">
+
+    <section class="py-5">
+      <div class="container">
+
+        <!-- Breadcrumbs -->
+          <ol class="breadcrumb ps-0  justify-content-start">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="/reservations/<%= @reservation.id %>">予約</a></li>
+            
+            <li class="breadcrumb-item active">予約変更   </li>
+          </ol>
+
+        <h1 class="hero-heading mb-0"><%= @reservation.post.title %></h1>
+
+
+
+        <div class="row">
+          <div class="col-lg-7 mb-5 mb-lg-0">
+            <div class="text-block"> 
+              <div class="row mb-3">
+                
+              </div>
+
+                <div class="col-sm-9">
+                  <h5>施術場所（東京都内）</h5>
+                </div>
+
+              <%= form_for(@reservation, url: reservation_path(@reservation)) do |f| %>
+
+                <%= f.label :city, "市区町村", class: "form-label" %><br />
+                <%= f.text_field :city, class:"form-control", value:@reservation.city %>
+
+                <%= f.label :street, "以降の住所", class:"form-label" %><br>
+                <%= f.text_field :street, class:"form-control", value:@reservation.street %>
+
+                  
+                <div class="actions">
+                  <%= f.submit "変更する", class:"btn btn-outline-primary mb-4" %>
+                </div>
+
+              <% end %>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section>
+            
+
+
+
+    <section class="py-6">
+      <div class="container">
+        <div class="table-responsive">
+          <table class="table text-gray-700 table-striped table-hover">
+            <div class="col-sm-9">
+              <h5>施術日時</h5>
+            </div>
+
+
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- 住所自動入力                       -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+
+    <script>
+      $(function() {
+        $(document).on('turbolinks:load', () => {
+          $('#user_postal_code').jpostal({
+            postcode : [
+              '#user_postal_code'
+            ],
+            address: {
+              "#user_prefecture_code": "%3", // # 都道府県が入力される
+              "#user_city"           : "%4", // # 市区町村と町域が入力される
+              "#user_street"         : "%5%6%7" // # 大口事務所の番地と名称が入力される
+            }
+          });
+        });
+      });
+    </script>
+
+
+    <!-- 駅名入力 -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // 事業者選択
+        $('#company_id').change(function(){
+          var company_id = $("#company_id").val();
+          $.get("<%= users_company_select_path %>",
+            { company_id: company_id },
+            function(data){ }
+          );
+        });
+    </script>
+
+
+    <script>
+        jQuery(document).bind('ready ajaxComplete', function() {
+      $('.select-drop').change(function() {
+          $(this).parent().submit();
+        });
+    });
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+
+  </body>
+</html>
+
+
+
+
+

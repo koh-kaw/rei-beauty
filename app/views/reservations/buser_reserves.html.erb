@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <body style="padding-top: 72px;">
+
+    <section class="py-5">
+      <div class="container">
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb ps-0  justify-content-start">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">予約一覧   </li>
+        </ol>
+
+        <div class="d-flex justify-content-between align-items-end mb-5">
+          <h1 class="hero-heading mb-0">予約一覧</h1>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center flex-column flex-lg-row mb-5">
+          <div class="me-3">
+            <!-- <p class="mb-3 mb-lg-0"><strong><%= @reserves.count %></strong> 件の予約がアクティブです</p> -->
+            <!-- number_to_currency(reserve.total) -->
+          </div>
+        </div>
+
+        <div class="list-group shadow mb-5">
+          <% @reserves.each do |reserve| %>
+            <% if reserve.done %>
+            <% else %>
+              <%= link_to reservation_path(reserve.id), class:"list-group-item list-group-item-action p-4", data: { turbolinks: false} do %>            
+
+                <% if @reserves.blank? %>
+                  <tr>
+                    <td colspan="7" class="has-text-centered"><h1>表示できるご予約はありません。</h1></td>
+                  </tr>
+                <% end %>
+
+            
+                <div class="row">
+                  <div class="col-lg-4 align-self-center mb-4 mb-lg-0">
+
+                    <div class="d-flex align-items-center mb-3">
+                      <h2 class="h5 mb-0"><%= reserve.post.title %></h2>
+                      <!--<img class="avatar avatar-sm avatar-border-white ms-3" src="img/avatar/avatar-1.jpg">-->
+                        <!-- link_to user_path(reserve.post.user), class: "tootip" do -->
+                        <!-- image_tag avatar_url(reserve.post.user), class: "is-rounded" -->
+                    </div>
+
+                    <p class="text-sm text-muted">予約日時</p>
+                    <%= reserve.day.strftime('%Y/%m/%d') %> <%= reserve.time.strftime('%H:%M') %>
+                  </div>
+
+                  <div class="col-lg-8">
+                    <div class="row">
+                      <div class="col-6 col-md-4 col-lg-3 py-3 mb-3 mb-lg-0">
+                        <h6 class="label-heading">施術タイプ</h6>
+                        <p class="text-sm fw-bold">ネイル</p>
+                        <h6 class="label-heading">料金</h6>
+                        <p class="text-sm fw-bold mb-0">¥<%= reserve.post.total_price %></p>
+                      </div>
+
+                      <div class="col-6 col-md-4 col-lg-3 py-3">
+                        <h6 class="label-heading">予約した日時</h6>
+                        <p class="text-sm fw-bold"><%= I18n.l(reserve.created_at, format: :short) %>                                        </p>
+                        <h6 class="label-heading">施術場所</h6>
+                        <p class="text-sm fw-bold mb-0">東京都</p>
+                      </div>
+
+                      <% if business_user_signed_in? && current_business_user.id == reserve.business_user_id %>
+
+                      <div class="col-12 col-lg-3 align-self-center"><%= button_to '施術完了', reservation_path(reserve.id), params: { done: true }, method: :put, class: "btn btn-primary px-3 text-secondary" %>
+
+                      </div>
+                      <% end %>
+
+                    </div>
+                  </div>  
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+          
+        </div>
+
+        
+<!-- 過去の予約　-->
+
+
+<div class="d-flex justify-content-between align-items-end mb-5">
+          <h1 class="hero-heading mb-0">過去の予約</h1>
+        </div>
+
+        <div class="list-group shadow mb-5">
+        <% @reserves.each do |reserve| %>
+          <% if reserve.done %>
+            <%= link_to reservation_path(reserve.id), class:"list-group-item list-group-item-action p-4", data: { turbolinks: false} do %>            
+
+              <% if @reserves.blank? %>
+                <tr>
+                  <td colspan="7" class="has-text-centered"><h1>表示できるご予約はありません。</h1></td>
+                </tr>
+              <% end %>
+
+            
+            <div class="row">
+              <div class="col-lg-4 align-self-center mb-4 mb-lg-0">
+                <div class="d-flex align-items-center mb-3">
+                  <h2 class="h5 mb-0"><%= reserve.post.title %></h2>
+                  <!--<img class="avatar avatar-sm avatar-border-white ms-3" src="img/avatar/avatar-1.jpg">-->
+                    <!-- link_to user_path(reserve.post.user), class: "tootip" do -->
+                    <!-- image_tag avatar_url(reserve.post.user), class: "is-rounded" -->
+                </div>
+                <p class="text-sm text-muted">予約日時</p>
+                <%= reserve.day.strftime('%Y/%m/%d') %> <%= reserve.time.strftime('%H:%M') %>
+                
+              </div>
+              <div class="col-lg-8">
+                <div class="row">
+                  <div class="col-6 col-md-4 col-lg-3 py-3 mb-3 mb-lg-0">
+                    <h6 class="label-heading">施術タイプ</h6>
+                    <p class="text-sm fw-bold">ネイル</p>
+                    <h6 class="label-heading">料金</h6>
+                    <p class="text-sm fw-bold mb-0">¥<%= reserve.post.total_price %></p>
+                  </div>
+
+                  <div class="col-6 col-md-4 col-lg-3 py-3">
+                    <h6 class="label-heading">予約した日時</h6>
+                    <p class="text-sm fw-bold"><%= I18n.l(reserve.created_at, format: :short) %>                                        </p>
+                    <h6 class="label-heading">施術場所</h6>
+                    <p class="text-sm fw-bold mb-0">東京都 <%= reserve.city %><%= reserve.street %></p>
+                  </div>
+                  
+                  <% if business_user_signed_in? && current_business_user.id == reserve.business_user_id %>
+                  <div class="col-12 col-lg-3 align-self-center"><span class="text-secondary text-sm text-uppercase me-4 me-lg-0"><i class="fa fa-check fa-fw me-2"> </i>施術済み</span><br class="d-none d-lg-block">
+                  </div>
+                  <% else %>
+                  <div class="col-12 col-lg-3 align-self-center"><span class="text-secondary text-sm text-uppercase me-4 me-lg-0"><i class="fa fa-check fa-fw me-2"> </i>支払い済み</span><br class="d-none d-lg-block">
+                  </div>
+                  <% end %>
+
+                </div>
+              </div>  
+            </div>
+            <% end %>
+          
+          <% else %>
+          <% end %>
+        <% end %>
+          
+        </div> 
+
+
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination pagination-template d-flex justify-content-center">
+            <li class="page-item"><a class="page-link" href="#"> <i class="fa fa-angle-left"></i></a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#"> <i class="fa fa-angle-right"></i></a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
+    <!-- Footer-->
+
+
+
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+  </body>
+</html>

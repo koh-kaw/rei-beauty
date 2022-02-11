@@ -1,0 +1,6 @@
+<span class="quick-drop">
+    <%= form_tag ajax_path, method: :get, remote: true do %>
+      
+      <%= select_tag :line, options_for_select(Line.all, :id, :name, selected_line), class: "select-drop" %>
+    <% end %>
+</span>

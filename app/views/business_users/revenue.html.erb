@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+  <html lang="ja">
+    <body style="padding-top: 72px;">
+
+      <section class="py-5">
+        <div class="container">
+          <!-- Breadcrumbs -->
+          <ol class="breadcrumb ps-0  justify-content-start">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">収益   </li>
+          </ol>
+
+          <div class="d-flex justify-content-between align-items-end mb-5">
+            <h1 class="hero-heading mb-0">収益確認</h1>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center flex-column flex-lg-row mb-5">
+            <div class="me-3">
+              <!-- number_to_currency(reserve.total) -->
+            </div>
+          </div>
+
+          <div class="list-group shadow mb-5">
+            <%= Date.today.year%>年 <%= Date.today.month%>月 (今月)<br>
+            <% @reserves.each do |r| %>
+              <% if r.day.present? %>
+                <% if (@this_month.include?(Date.parse(r[:day].to_s))) %>
+                  <% @pay =  r.price + r.trans_fee * 1.1%>
+                  <% @tax_off_price = r.price + r.trans_fee %>
+                  <% @tax =  @tax_off_price * 0.1%>
+
+                  タイトル: <%= r.post.title %><br>
+                  施術日: <%= r.day.strftime("%Y年%m月%d日") %><br>
+                  お支払額: <%= @pay.floor.to_s(:delimited) %><br>
+                  内訳: 施術料(¥<%= r.price.to_s(:delimited) %>)、訪問料(¥<%= r.trans_fee.to_s(:delimited) %>)、消費税(¥<%= @tax.floor.to_s(:delimited) %>)
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+
+          <!-- Pagination -->
+          <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-template d-flex justify-content-center">
+              <li class="page-item"><a class="page-link" href="#"> <i class="fa fa-angle-left"></i></a></li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#"> <i class="fa fa-angle-right"></i></a></li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+  </body>
+</html>

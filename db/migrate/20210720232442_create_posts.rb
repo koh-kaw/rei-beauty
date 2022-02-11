@@ -5,10 +5,19 @@ class CreatePosts < ActiveRecord::Migration[6.0]
       t.text :content, null: false
       t.integer :category_id, null: false
       t.integer :price, null: false
+      t.integer :total_price, null: false
+      t.integer :service_fee, null: false
+      t.integer :trans_fee, null: false, default: 1000
+      t.integer :cancel_price, null: false, default: 0
       t.string :image
-      t.integer :buser_id
+      t.integer :business_user_id
+      t.string :business_user_name
       t.integer :time, null: false
-      
+      t.time :start_time
+      t.time :end_time
+      t.integer :weekday
+      t.integer :tax, null: false
+
       t.timestamps
     end
   end

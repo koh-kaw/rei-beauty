@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <body style="padding-top: 72px;">
+
+    <% @reservations.each do |reservation| %>
+      <div>
+        <%= reservation.user.name %>
+        <%= reservation.day %>
+        <%= link_to "DM", room_path(reservation) %>
+      </div>
+    <% end %>
+
+    <% @reserves.each do |reserve| %>
+    <div>
+      <% if @reserves.blank? %>
+        <tr>
+        <td colspan="7" class="has-text-centered"><h1>チャットはありません。</h1></td>
+        </tr>
+      <% end %>
+      </div>
+      <div>
+      <%= reserve.user.name %>
+      <%= reserve.day %>
+      <%= link_to "DM", room_path(reserve) %>
+      <% end %>
+  </body>
+</html>

@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    
+  </head>
+
+  <body style="padding-top: 72px;">
+    <section class="py-5">
+      <div class="container">
+
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb ps-0  justify-content-start">
+          <li class="breadcrumb-item"><a href="index.html">ホーム</a></li>
+          <li class="breadcrumb-item"><a href="user-account.html">マイアカウント</a></li>
+          <li class="breadcrumb-item active">営業時間設定  </li>
+        </ol>
+
+        <h1 class="hero-heading mb-0">営業時間設定</h1>
+        
+        <div class="row">
+          <div class="col-lg-7 mb-5 mb-lg-0">
+            <div class="text-block"> 
+              <div class="row mb-3">
+                
+              </div>
+
+                <div class="col-sm-9">
+                  <h5>予約間移動時間</h5>
+                </div>
+
+              <%= form_with model: @business_user, method: :put, local: true do |f| %>
+
+                <%= f.label :interval, "予約間移動時間", class: "form-label" %><br />
+                <p>現在の移動時間設定：<%= @business_user.interval %></p>
+                <%= f.time_field :interval, class:"form-control", value: @business_user.interval, min:"60", max:"08:00", step:"60"%>
+                
+                  
+                <div class="actions">
+                  <%= f.submit "保存", class:"btn btn-outline-primary mb-4" %>
+                </div>
+
+              <% end %>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section>
+            
+
+
+
+    <section class="py-6">
+      <div class="container">
+        <div class="table-responsive">
+          <table class="table text-gray-700 table-striped table-hover">
+            <div class="col-sm-9">
+              <h5>営業時間設定</h5>
+            </div>
+              <%= calendar do |date| %>
+                <%= date.day %>
+              <% end %>
+
+
+
+<h3 class="text-center">カレンダー</h3>
+<!-- カレンダーの表示 -->
+<div id="calendar"></div>
+<!-- もしユーザーがログインしていたら -->
+<% if user_signed_in? %>
+    <!-- ページのparams.idがログインユーザー.idと同じなら -->
+    <% if @user.id == current_user.id %>
+        <div id="inputScheduleForm" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-nm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">スケジュール登録</h4>
+                    </div>
+                    <div class="modal-body">
+                        <%= form_with model: @event, url: events_path do |f| %>
+                            <div  class="col">
+                                    <p>
+                                        <span>タイトル</span>
+                                        <span><%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力してください" %></span>
+                                    </p>
+                                    <span>開始日時</span>
+                                    <span><%= f.datetime_field  :start, placeholder: "XXXX-XX-XX", class:"field" %> ~ </span><br>
+                                    <span>終了日時</span>
+                                    <span><%= f.datetime_field :end, placeholder: "XXXX-XX-XX", class:"field" %></span><br>
+                                    <span>詳細
+                                    <%= f.text_field :body, class: "form-control", placeholder: "タイトルの詳細を記入してください" %></span>
+                            </div>
+                            <div class="modal-footer">
+                                <%= f.submit "登録する", class: "btn btn-primary" %>
+                                <%= f.hidden_field :user_id, :value => current_user.id %>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- 編集 ------------------------------------------------------------------>
+        <div id="inputEditForm">
+            <%= render 'events/edit', events: @events %>
+        </div>
+    <% end %>
+<% end %>
+    <script>
+    // CRUDを行う際にCSRF対策のtokenを発行
+        $(document).ready(function() {
+        var prepare = function(options, originalOptions, jqXHR) {
+          var token;
+          if (!options.crossDomain) {
+            token = $('meta[name="csrf-token"]').attr('content');
+            if (token) {
+              return jqXHR.setRequestHeader('X-CSRF-Token', token);
+            }
+          }
+        };
+        }
+        )
+
+        // カレンダー表示
+        $('#calendar').fullCalendar ({
+            header: {
+                left: 'prev,next today',
+                center: 'month,agendaWeek,agendaDay',
+                right: 'title'
+            },
+
+            buttonText: {
+                  prev: "<",
+                  next: ">"
+            },
+
+            timezone: 'UTC',
+            events: '/users/events.json',
+            navLinks: true,
+            selectable: true,
+            selectHelper: true,
+            // 日付クリック
+            dayClick : function ( date , jsEvent , view ) {
+                $('#inputScheduleForm').modal('show');
+                },
+
+            // event クリックで編集、削除
+            eventClick : function(event, jsEvent , view) {
+                jsEvent.preventDefault();
+                $(`#inputScheduleEditForm${event.id}`).modal('show');
+            },
+
+            eventMouseover : function(event, jsEvent , view) {
+                jsEvent.preventDefault();
+            }
+        })
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- 住所自動入力                       -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+
+    <script>
+      $(function() {
+        $(document).on('turbolinks:load', () => {
+          $('#user_postal_code').jpostal({
+            postcode : [
+              '#user_postal_code'
+            ],
+            address: {
+              "#user_prefecture_code": "%3", // # 都道府県が入力される
+              "#user_city"           : "%4", // # 市区町村と町域が入力される
+              "#user_street"         : "%5%6%7" // # 大口事務所の番地と名称が入力される
+            }
+          });
+        });
+      });
+    </script>
+
+
+    <!-- 駅名入力 -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // 事業者選択
+        $('#company_id').change(function(){
+          var company_id = $("#company_id").val();
+          $.get("<%= users_company_select_path %>",
+            { company_id: company_id },
+            function(data){ }
+          );
+        });
+    </script>
+
+
+    <script>
+        jQuery(document).bind('ready ajaxComplete', function() {
+      $('.select-drop').change(function() {
+          $(this).parent().submit();
+        });
+    });
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+
+  </body>
+</html>
+
+
+
+
+

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <script type="text/javascript" src="https://js.pay.jp/v1/"></script>
+  </head>
+
+  <body style="padding-top: 72px;">
+
+    <div class="container-fluid">               
+      <div class="row">
+        <div class="col-lg-7 col-xl-5 px-4 pb-4 ps-xl-5 pe-xl-5">
+
+          <section class="mx-n4 mx-xl-n5 mb-4 mb-xl-5">
+
+            <!-- Slider main container-->
+
+          </section>
+
+          <!-- Breadcrumbs -->
+          <ol class="breadcrumb ps-0  justify-content-start">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="user-grid.html">予約</a></li>
+            <li class="breadcrumb-item active">予約詳細   </li>
+          </ol>
+
+          <div class="text-block">
+
+            <h1 class="hero-heading mb-3"><%= @reservation.post.title %></h1>
+          </div>
+          
+          <div class="text-block">
+            <h6 class="mb-4">予約日時</h6>
+            <div class="row mb-3">
+
+              <div class="col-md-6 d-flex align-items-center mb-3 mb-md-0">
+                <p class="text-muted"><%= @reservation.day.strftime('%Y/%m/%d') %> <%= @reservation.time.strftime('%H:%M') %></p>
+              </div>
+
+              <div class="col align-self-center">
+                <p class="text-end d-print-none"><%= link_to edit_reservation_path, class:"btn btn-link text-muted" do %>
+                  <i class="far fa-file me-2"></i>予約変更</a></p>
+                <% end %>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="text-block">
+            <div class="row">
+              <div class="col-sm">
+                <h6>施術場所</h6>
+                <p class="text-muted">東京都 <%= @reservation.city %><%= @reservation.street %></p>
+                
+
+              </div>
+                <div class="col align-self-center">
+                <p class="text-end d-print-none"><%= link_to edit_reservation_path, class:"btn btn-link text-muted" do %>
+                  <i class="far fa-file me-2"></i>予約変更</a></p>
+                <% end %>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="text-block">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div>
+                <h6>予約ユーザー</h6>
+                <p class="text-muted mb-0">
+                <a href="/users/<%= @user.id %>" class="text-reset"><%= @user.name %> 様</a></p>
+              </div>
+              <a href="/users/<%= @user.id %>">
+                <% if @user.image.url.nil? %>
+                  <%= image_pack_tag "default_user_image.png", :class => "avatar avatar-lg p-1 flex-shrink-0 ms-4" %>
+                <% else %>
+                  <%= image_tag @user.image.url, :class => "avatar avatar-lg p-1 flex-shrink-0 ms-4" %>
+                <% end %>
+              </a>
+            </div>
+          </div>
+
+          <div class="text-block">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div>
+                <h6>担当ビューティシャン</h6>
+                <p class="text-muted mb-0">
+                <a href="/business_users/<%= @business_user.id %>" class="text-reset"><%= @business_user.name %></a></p>
+              </div>
+              <a href="/business_users/<%= @business_user.id %>">
+                <% if @business_user.image.url.nil? %>
+                  <%= image_pack_tag "default_user_image.png", :class => "avatar avatar-lg p-1 flex-shrink-0 ms-4" %>
+                <% else %>
+                  <%= image_tag @business_user.image.url, :class => "avatar avatar-lg p-1 flex-shrink-0 ms-4" %>
+                <% end %>
+              </a>
+            </div>
+          </div>
+
+          <div class="text-block">
+            <div class="row">
+              <div class="col">
+                <h6>料金</h6>
+                <p class="text-muted">施術料：¥<%= @reservation.post.total_price %></p>
+
+              </div>
+
+              <div class="col align-self-center">
+                <!--<p class="text-end d-print-none">
+                <%= link_to edit_user_registration_path, class:"btn btn-link text-muted" do %>
+                  <i class="far fa-file me-2"></i>お支払い設定</a></p>
+                <% end %>-->
+
+              <p class="text-end d-print-none">
+                <% if @reservation.done == false %>
+                  <%= render "receipt" %>
+                <% end %>
+              </p>
+
+
+              </div>
+            </div>
+          </div>
+           
+          <div class="text-block">
+            <div class="row">
+              <div class="col">
+                <h6>チャット</h6>
+              </div>
+              <div class="col align-self-center">
+                <p class="text-end d-print-none">
+                <!-- ユーザーかビジネスユーザーか判定し、それぞれのチャット画面のリンクを表示 -->
+                <% if business_user_signed_in? && current_business_user.id == @reservation.business_user_id %>
+                  <%= link_to business_users_room_path, class:"btn btn-link text-muted" do %>
+                    <i class="far fa-file me-2"></i>チャットを開く</p>
+                  <% end %>
+                  
+                  
+                <% else %>
+                  <%= link_to room_path, class:"btn btn-link text-muted" do %>
+                    <i class="far fa-file me-2"></i>チャットを開く</p>
+                  <% end %>
+                <% end %>
+                
+                
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="text-block">
+            <div class="row">
+              <div class="col-sm">
+                <h6>レビュー</h6>
+                <div class="py-5">
+                  <% if Date.current.strftime > @reservation.day.strftime("%Y-%m-%d") || Date.current.strftime >= @reservation.day.strftime("%Y-%m-%d") && Time.now > @reservation.time || @reservation.done%>
+                    <%= form_for @review, class:"form" do |f| %>
+                      <%= f.hidden_field :user_id, value: current_user.id %>
+                      <%= f.hidden_field :business_user_id, value: @reservation.post.business_user_id %>
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="mb-4">
+                            <%= f.label :rate, '評価', class: "form-label" %>
+                            <%= f.select :rate, [['⭐️⭐️⭐️⭐️⭐️ (5/5)', 5], ['⭐️⭐️⭐️⭐️ (4/5)', 4], ['⭐️⭐️⭐️ (3/5)', 3], ['⭐️⭐️ (2/5)', 2], ['⭐️ (1/5)', 1]], { include_blank: true, selected: 5 }, { class: 'form-select focus-shadow-0' , required: true } %>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-4">
+                        <%= f.label :rate, 'コメント', class: "form-label" %>
+                        <%= f.text_area :comment, class: "form-control", rows:"4", placeholder:"レビュー内容を入力してください" %>
+                      </div>
+
+                      <%= f.submit 'レビューを送信', class: "btn btn-primary text-secondary" %>
+
+                    <% end %>
+                  <% else %>
+                    <p>施術終了後、こちらからレビューのご協力をお願いします。</p>
+                  <% end %>
+                </div>           
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ログインユーザーがビューティシャンなら施術終了ボタンを表示-->
+
+          <% if business_user_signed_in? && current_business_user.id == @reservation.business_user_id %>
+            <%= render "done"%>
+          <% end %>
+          
+              
+
+          <div class="text-block d-print-none">
+          <% dsec = Time.zone.now - @reservation.time %>
+            <% if (dsec / 60 / 60).abs < 24 %>
+              <p class="text-muted">
+              キャンセル料：¥<%= @reservation.post.cancel_price %><br>
+              *キャンセルが必要な場合、<%= link_to "チャットから", room_path, class:"text-secondary" %>直接ビューティシャンへご連絡ください
+              </p>
+            <% else %> 
+              
+              <%= link_to "予約をキャンセル", "/reservations/#{@reservation.id}", data: { confirm: '利用規約に同意し、予約をキャンセルしますか？', method:"delete"}, class: "btn btn-link ps-0 text-secondary" %>
+            <% end %>
+          </div>
+        </div>
+
+
+        <div class="col-lg-5 col-xl-7 map-side-lg px-lg-0">
+          <div class="map-full shadow-left" id="detailSideMap"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+
+    <!-- Map-->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+    <!-- Available tile layers-->
+    <script src="js/map-layers.js"> </script>
+    <script src="js/map-detail.js">                               </script>
+    <script>
+      createDetailMap({
+          mapId: 'detailSideMap',
+          mapZoom: 18,
+          mapCenter: [40.732346, -74.0014247],
+          markerShow: true,
+          markerPosition: [40.732346, -74.0014247],
+          markerPath: 'img/marker.svg',
+      })
+    </script>
+  </body>
+</html>

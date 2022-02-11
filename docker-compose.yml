@@ -6,7 +6,8 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
-  web:
+  
+  app:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
@@ -15,3 +16,20 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    environment:
+      TZ: Asia/Tokyo
+  
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    volumes:
+      - ./public:/usr/share/nginx/public:cached
+      - ./log/nginx:/var/log/nginx
+    ports:
+      - 80:80
+#      - 443:443
+    depends_on:
+      - app
+    environment:
+      TZ: Asia/Tokyo

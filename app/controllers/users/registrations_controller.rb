@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
+  #before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -10,9 +10,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+    #@user.image = "default_user_image.png"
+    resource.build_profile
+    #resource.profile.name = resource.username
+    if resource.save
+      flash[:notice] = "登録したメールアドレスに確認メールを送信しました。メールアドレスをご確認ください。"
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -23,6 +29,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def update
   #   super
   # end
+  #def update
+  #  current_user.update(account_update_params)
+  #  redirect_to user_path(current_user)
+  #end
 
   # DELETE /resource
   # def destroy
@@ -38,7 +48,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
@@ -46,14 +56,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_account_update_params
-  #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
-  # end
+  def configure_account_update_params
+    #devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :birth, :image, :email, :tel, :gender, :postal_code, :prefecture_code, :city, :street, :station_id, :company_id, :line_id, :station, :ward_id, :id_front_image, :id_back_image])
+  end
+
+  # ユーザー編集
+  def update_resource(resource, params)
+    resource.update_without_current_password(params)
+  end
 
   # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
-  # end
+  def after_sign_up_path_for(resource)
+    #super(resource)
+    edit_user_registration_path
+  end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

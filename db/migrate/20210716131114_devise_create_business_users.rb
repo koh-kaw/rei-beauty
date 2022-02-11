@@ -38,19 +38,40 @@ class DeviseCreateBusinessUsers < ActiveRecord::Migration[6.0]
       t.string :first_name, null: false
       t.string :family_name_kana, null: false
       t.string :first_name_kana, null: false
-      t.string :tel, null: false, unique: true 
-      t.integer :station
-      t.integer :sex, null: false
-      t.integer :cert
+      t.string :tel, null: false, unique: true
+      
+      t.string :station
+      t.integer :gender, null: false
+      t.boolean :cert,                     null: false, default: false
       t.date :birth, null: false
+      t.string :interval, default: "1:00"
 
-      t.string :postal_code, null: false
+      #t.string :postal_code, null: false
+      t.integer :postal_code, null: false
       t.string :prefecture_code, null: false
       t.string :city, null: false
       t.string :street, null: false
       t.string :other_address
 
-      t.text :self_introduction
+      t.integer :station_id
+      t.integer :stations
+
+      t.integer :category_id
+      t.integer :category_certs, array: true, default: []
+
+
+      t.text :self_introduction, default: "よろしくお願いします！"
+
+      t.integer :ward_id
+      t.string :emergency_name, null: false
+      t.string :emergency_contact, null: false
+      
+      # 銀行口座登録
+      t.integer :bank_account_number
+      t.string :bank_name
+      t.string :bank_username
+      t.integer :bank_type
+
 
       t.timestamps null: false
     end

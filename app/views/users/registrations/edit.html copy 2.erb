@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <script type="text/javascript" src="http://express.heartrails.com/api/express.js"></script>
+  </head>
+
+
+  <body style="padding-top: 72px;" onload="HRELoadPrefecture('prefecture', 'line', 'station');">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= render "users/shared/error_messages", resource: resource %>
+
+
+    <section class="py-5">
+      <div class="container">
+
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb ps-0  justify-content-start">
+          <li class="breadcrumb-item"><a href="index.html">ホーム</a></li>
+          <li class="breadcrumb-item"><a href="user-account.html">マイアカウント</a></li>
+          <li class="breadcrumb-item active">アカウント設定  </li>
+        </ol>
+        <h1 class="hero-heading mb-0">アカウント設定</h1>
+        
+        <div class="row">
+          <div class="col-lg-7 mb-5 mb-lg-0">
+            <div class="text-block"> 
+              <div class="row mb-3">
+                <div class="col-sm-9">
+                  <h5>ユーザー情報</h5>
+                </div>
+                <div class="col-sm-3 text-end">
+                  <button class="btn btn-link ps-0 text-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#personalDetails" aria-expanded="false" aria-controls="personalDetails">編集</button>
+                </div>
+              </div>
+
+              <p class="text-sm text-muted">
+              <i class="fa fa-id-card fa-fw me-2"></i><%= @user.name %><br>
+              <i class="fa fa-birthday-cake fa-fw me-2"></i><%= @user.birth %><br>
+              <i class="fa fa-envelope-open fa-fw me-2"></i><%= @user.email %>  <span class="mx-2"> | </span>  <i class="fa fa-phone fa-fw me-2"></i><%= @user.tel %></p>
+
+              <div class="collapse" id="personalDetails">
+                <form action="#">
+                  <div class="row pt-4">
+
+                    <!-- 氏 + 名-->
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :family_name, "氏", class:"form-label" %><br />
+                      <%= f.text_field :family_name, class:"form-control" %>
+                    </div>
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :first_name, "名", class: "form-label" %><br />
+                      <%= f.text_field :first_name, class:"form-control"  %>
+                    </div>
+
+                    <!-- シ + メイ-->
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :family_name_kana, "氏(ふりがな)", class: "form-label" %><br />
+                      <%= f.text_field :family_name_kana, class:"form-control"  %>
+                    </div>
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :first_name_kana, "名(ふりがな)", class: "form-label" %><br />
+                      <%= f.text_field :first_name_kana, class:"form-control"  %>
+                    </div>
+
+
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :name, "ユーザー名", class:"form-label"%>
+                      <%= f.text_field:name, class:"form-control", value:@user.name  %>
+                    </div>
+
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :birth, "生年月日", class:"form-label" %>
+                      <%= f.date_field :birth, class:"form-control" %>
+                    </div>
+
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :email, class:"form-label"%><br />
+                      <%= f.email_field :email, class:"form-control", autocomplete: "email", value:@user.email  %>
+                      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+                      <% end %>
+                    </div>
+
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :tel, "電話番号", class: "form-label" %><br />
+                      <%= f.telephone_field :tel, class:"form-control"  %>
+                    </div>
+                    
+                    <!-- 性別 -->
+                    <div class="mb-4 col-md-6">
+                      <div class="btn-group btn-group-toggle d-flex mb-3" data-toggle="buttons">
+                        <label class="btn btn-light flex-fill mr-2 active">
+                          <%= f.radio_button :gender, :woman, class: "form-check-input" %>
+                          <label class="form-check-label">女性</label>
+                        </label>
+                        <label class="btn btn-light flex-fill">
+                          <%= f.radio_button :gender, :man, class: "form-check-input" %>
+                          <label class="form-check-label">男性</label>
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                    <div class="actions">
+                      <%= f.submit "保存", class:"btn btn-outline-primary mb-4" %>
+                    </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- パスワード設定 -->
+            <div class="text-block"> 
+              <h5 class="mb-4">ログイン情報</h5>
+              <div class="row">
+                <div class="col-sm-8">
+                  <h6>パスワード設定</h6>
+                </div>
+                <div class="col text-end">
+                  <button class="btn btn-link ps-0 text-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#updatePassword" aria-expanded="false" aria-controls="updatePassword">編集</button>
+                </div>
+              </div>
+
+              <div class="collapse" id="updatePassword">
+                <div class="row mt-4">
+
+                  <div class="mb-4 col-12">
+                    <%= f.label :current_password, class:"form-label" %><br />
+                    <%= f.password_field :current_password, autocomplete: "current-password", class:"form-control" %>
+                  </div>
+
+                  <div class="mb-4 col-md-6">
+                    <%= f.label :password, class:"form-label" %>
+                    <%= f.password_field :password, autocomplete: "new-password", class:"form-control" %>
+                  </div>
+
+                  <div class="mb-4 col-md-6">
+                    <%= f.label :password_confirmation, class:"form-label" %><br />
+                    <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"form-control" %>
+                  </div>
+                </div>
+                <div class="actions">
+                  <%= f.submit "保存", class:"btn btn-outline-primary" %>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- 最寄り駅 -->
+            <div class="text-block"> 
+              <h5 class="mb-4">最寄り駅</h5>
+              <div class="row">
+                <div class="col-sm-8">
+                  <h6>最寄り駅設定</h6>
+                </div>
+                <div class="col text-end">
+                  <button class="btn btn-link ps-0 text-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#updatePassword" aria-expanded="false" aria-controls="updatePassword">編集</button>
+                </div>
+              </div>
+
+              <div class="collapse" id="updatePassword">
+                <div class="row mt-4">
+
+                    <div class="mb-4 col-md-6">
+
+                      <%= f.label :station, "最寄り駅", class:"form-label" %><br>
+
+                        <select id="prefecture" name="prefecture" onchange="HREOnChangePrefecture();">
+                        <option value="都道府県を選択してください">都道府県を選択してください</option>
+                        </select>
+
+                        <select id="line" name="line" onchange="HREOnChangeLine();">
+                        <option value="路線を選択してください">路線を選択してください</option>
+                        </select>
+
+
+                        <select id="station" name="station">
+                          <option value="駅を選択してください">駅を選択してください</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="actions">
+                  <input type="submit" value="リクエストを送信">
+                </div>
+              </div>
+            </div>
+
+
+            <!-- 施術場所 -->
+            <div class="text-block"> 
+              <div class="row mb-3">
+                <div class="col-sm-9">
+                  <h5>施術場所</h5>
+                </div>
+                <div class="col-sm-3 text-end">
+                  <button class="btn btn-link ps-0 text-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#address" aria-expanded="false" aria-controls="address">編集</button>
+                </div>
+              </div>
+
+              <div class="d-flex text-sm text-muted"> <i class="fa fa-address-book fa-fw flex-shrink-0 me-2"></i>
+                <div class="mt-n1"><%= @user.postal_code %><br>
+                <%= JpPrefecture::Prefecture.find(code: @user.prefecture_code).try(:name) %><br>
+                <%= @user.city %> <%= @user.street %></div>
+              </div>
+
+
+              <div class="collapse" id="address">
+                  <div class="row pt-4">
+
+                    <div class="mb-4 col-md-6">
+
+                      <%= f.label :station, "最寄り駅", class:"form-label" %><br>
+                      <%= f.collection_select(:ward_id, Ward.all, :id, :name, {prompt: "最も近いエリアを選択"}, {class: "text-muted form-select w-100"}) %>
+
+
+                      <%= f.label :station, "最寄り駅", class:"form-label" %><br>
+                        
+                        <select id="prefecture" name="prefecture" onchange="HREOnChangePrefecture();">
+                        <option value="都道府県を選択してください">都道府県を選択してください</option>
+                        </select>
+
+                        <select id="line" name="line" onchange="HREOnChangeLine();">
+                        <option value="路線を選択してください">路線を選択してください</option>
+                        </select>
+
+
+                        <select id="station" name="station">
+                          <option value="駅を選択してください">駅を選択してください</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :postal_code, "郵便番号", class:"form-label" %><br>
+                      <%= f.text_field :postal_code, class:"form-control", value:@user.postal_code %>
+                    </div>
+
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :prefecture_code, "都道府県", class:"form-label"%><br>
+                       <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :code, :name, {}, class:"form-select form-control", value:@user.prefecture_code %>
+                    </div>
+
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :city, "市区町村", class:"form-label" %><br>
+                      <%= f.text_field :city, class:"form-control", value:@user.city %>
+                    </div>
+
+                    <div class="mb-4 col-md-6">
+                      <%= f.label :street, "以降の住所", class:"form-label" %><br>
+                      <%= f.text_field :street, class:"form-control", value:@user.street %>
+                    </div>
+
+                  </div>
+                  
+                  <div class="actions">
+                    <%= f.submit "保存", class:"btn btn-outline-primary mb-4" %>
+                  </div>
+
+              </div>
+            </div>
+
+
+
+
+            <div class="text-block"> 
+              <h3 class="mb-4">退会</h3>
+              <div class="row">
+                <div class="col-sm-8">
+                  <h6>アカウント削除</h6>
+                </div>
+                <div class="col text-end">
+                  <%= button_to "退会する", registration_path(resource_name), class:"btn btn-link ps-0 text-primary collapsed", data: { confirm: "本当に退会しますか?" }, method: :delete %></p>
+                </div>
+              </div>
+              <div class="collapse" id="deleteAccount">
+                <div class="row mt-4">
+                  <div class="mb-4 col-12">
+                    <label class="form-label" for="password-current">Current Password</label>
+                    <input class="form-control" type="password" name="password-current" id="password-current">
+                  </div>
+                  <div class="mb-4 col-md-6">
+                    <label class="form-label" for="password-new">New Password</label>
+                    <input class="form-control" type="password" name="password-new" id="password-new">
+                  </div>
+                  <div class="mb-4 col-md-6">
+                    <label class="form-label" for="password-confirm">Confirm Password</label>
+                    <input class="form-control" type="password" name="password-confirm" id="password-confirm">
+                  </div>
+                </div>
+                <button class="btn btn-outline-primary">Update Password</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- カード -->
+          <div class="col-md-8 col-lg-4 ms-lg-auto">
+            <div class="card border-0 shadow">
+            <!-- カードヘッダー -->
+              <div class="card-header bg-primary-light py-4 border-0 text-center">
+                <%= f.label :image do %>
+                  <% if @user.image.url.nil? %>
+                    <%= image_pack_tag "default_user_image.png", id: :img_prev, :class => "d-block avatar avatar-xxl p-2 mb-2" %>
+                  <% else %>
+                    <%= image_tag @user.image.url, id: :img_prev, class: "profile-img d-block avatar avatar-xxl p-2 mb-2" %>
+                  <% end %>
+                  <%= f.file_field :image, id: :user_image, style: 'display:none' %>
+
+                  <script type="text/javascript">
+                    $(function() {
+                      function readURL(input) {
+                          if (input.files && input.files[0]) {
+                          var reader = new FileReader();
+                          reader.onload = function (e) {
+                      $('#img_prev').attr('src', e.target.result);
+                          }
+                          reader.readAsDataURL(input.files[0]);
+                          }
+                      }
+                      $("#user_image").change(function(){
+                          readURL(this);
+                      });
+                    });
+                  </script>
+                <% end %>
+
+                <h5><%= @user.name %></h5>
+                  <p class="text-muted text-sm mb-0"><%= JpPrefecture::Prefecture.find(code: @user.prefecture_code).try(:name) %></p>
+              </div>
+
+              <!-- カードボディ-->
+              <div class="card-body p-4">
+                <%= f.label :self_introduction, "自己紹介", class:"form-label"%>
+                <input class="form-control text-muted text-sm card-text" type="text" name="self_introduction" id="self_introduction" rows:="4" value=<%= @user.self_introduction %>>
+              </div>
+
+              <div class="actions">
+                <%= f.submit "変更を保存", class:"btn btn-secondary" %>
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+    <%= link_to "Back", :back %>
+    <% end %>
+
+
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- 住所自動入力                       -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+
+    <script>
+      $(function() {
+        $(document).on('turbolinks:load', () => {
+          $('#user_postal_code').jpostal({
+            postcode : [
+              '#user_postal_code'
+            ],
+            address: {
+              "#user_prefecture_code": "%3", // # 都道府県が入力される
+              "#user_city"           : "%4", // # 市区町村と町域が入力される
+              "#user_street"         : "%5%6%7" // # 大口事務所の番地と名称が入力される
+            }
+          });
+        });
+      });
+    </script>
+
+
+    <!-- 駅名入力 -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // 事業者選択
+        $('#company_id').change(function(){
+          var company_id = $("#company_id").val();
+          $.get("<%= users_company_select_path %>",
+            { company_id: company_id },
+            function(data){ }
+          );
+        });
+    </script>
+
+
+    <script>
+        jQuery(document).bind('ready ajaxComplete', function() {
+      $('.select-drop').change(function() {
+          $(this).parent().submit();
+        });
+    });
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+
+  </body>
+</html>

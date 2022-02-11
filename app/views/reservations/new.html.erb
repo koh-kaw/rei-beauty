@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <body style="padding-top: 72px;">
+    <section class="py-5">
+    
+    <%= form_for [@post, @post.reservations.new] do |f| %>
+      <%= f.hidden_field :post_id, value: @post.id %>
+      <div class="container">
+        <div class="row">
+        
+          <div class="col-lg-7">
+            <p class="subtitle text-primary">施術予約</p>
+            <h1 class="h2 mb-5"> 予約を確認してください       </h1>
+            <div class="text-block">
+              <div class="alert alert-warning text-sm mb-3">
+                <div class="d-flex align-items-center">
+                  <svg class="svg-icon svg-icon svg-icon-light w-2rem h-2rem me-3 text-reset flex-shrink-0">
+                    <use xlink:href="#heart-1"> </use>
+                  </svg>
+                  <div>予約の完了後、ビューティシャンとの連絡にはチャットをご利用ください</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-block">
+              <h5 class="mb-4">予約日時</h5>
+              <div class="row mb-3">
+                <div class="col-md-6 d-flex align-items-center mb-3 mb-md-0">
+                  <!--<div class="date-tile me-3"> -->
+
+                  <!--</div>-->
+
+                  <p class="text-sm mb-0">
+                    <%= f.label :day, '予約日' %>
+                    <%= f.date_field :day, class: 'form-control', value: @day, readonly:true, required: true %>
+                    
+                    <%= f.label :time, '予約時間' %>
+                    <%= f.time_field :time, class: 'form-control', value: @time, readonly:true, required: true %>
+
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
+            
+            <div class="text-block">
+              <h5 class="mb-4">予約場所（東京都内）</h5>
+              <div class="row mb-3">
+                <div class="col-md-6 d-flex align-items-center mb-3 mb-md-0">
+
+                  <p class="text-sm mb-0">
+                      <%= f.label :city, "市区町村", class:"form-label" %><span style="color:#ff0000;"> *必須</span>
+                      <%= f.text_field :city, class:"form-control", value:@user.city, required: true %>
+                  </p>
+
+                  <p class="text-sm mb-0">
+                      <%= f.label :street, "以降の住所", class:"form-label" %><span style="color:#ff0000;"> *必須</span>
+                      <%= f.text_field :street, class:"form-control", value:@user.street, required: true %>
+                  </p>
+
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="text-block">
+              <h5 class="mb-4">お支払い情報</h5>
+              <div class="row mb-3">
+                <div class="col-md-6 d-flex align-items-center mb-3 mb-md-0">
+
+                  <p class="text-sm mb-0">
+                    
+                  </p>
+
+                  <p class="text-sm mb-0">
+
+                  </p>
+
+                  <% if @card.present? %>
+                    <% @flag = 1 %>
+                    <p>カード番号：**** **** **** <%= @card.last4%></p>
+                    <p>カード名義人: <%= @card.name %></p>
+                    <p>有効期限：<%= @card.exp_month %> / <%= @card.exp_year %></p>
+                    <p>ブランド：<%= @card.brand %></p>
+                  <% else %>
+                    <% @flag = 0 %>
+                    <p>カードが登録されていません</p><br>
+                    <%= link_to 'クレジットカード登録', new_card_path, data: {"turbolinks" => false}%>
+                  <% end %>
+
+                </div>
+              </div>
+            </div>
+ 
+            <div class="row form-block flex-column flex-sm-row">
+              
+              <div class="col text-center text-sm-start">
+
+              </div>
+              
+              <%= f.hidden_field :user_id, value: current_user.id %>
+              <%= f.hidden_field :business_user_id, value: @post.business_user_id %>
+              <%= f.hidden_field :start_time, value: @start_time %>
+              <%= f.hidden_field :service_fee, value: @post.service_fee %>
+              <%= f.hidden_field :price, value: @post.price %>
+              <%= f.hidden_field :trans_fee, value: @post.trans_fee %>
+              <%= f.hidden_field :cancel_price, value: @post.cancel_price %>
+              <%= f.hidden_field :total_price, value: @post.total_price %>
+              
+              
+            <!--  <%= link_to '戻る', "/posts/#{@post_id}", class: "text-secondary" %> -->
+            
+            </div>
+          </div>
+
+
+
+
+          <div class="col-lg-5 ps-xl-5">
+            <div class="card border-0 shadow">
+              <div class="card-body p-4">
+                <div class="text-block pb-3">
+                  <div class="d-flex align-items-center">
+                    <div>
+                      <h6> <a class="text-reset" href="/posts/<%= @post.id %>"><%= @post.title %> </a></h6>
+                      <p class="text-muted text-sm mb-0"><%= @post.business_user_name %></p>
+                  </div>
+                </div>
+                <div class="text-block py-3">
+
+                </div>
+                <div class="text-block pt-3 pb-0">
+                  <table class="w-100">
+                    <tbody>
+                      <% @price_fee = @post.price + @post.service_fee %>
+                      <tr>
+                        <th class="fw-normal py-2">サービス料</th>
+                        <td class="text-end py-2">¥<%= @price_fee %></td>
+                      </tr>
+                      
+                      <tr>
+                        <th class="fw-normal pt-2 pb-3">ビューティシャン訪問料(一律)</th>
+                        <td class="text-end pt-2 pb-3">¥<%= @post.trans_fee %></td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr class="border-top">
+                        <th class="pt-3">合計(税込み)</th>
+                        <td class="fw-bold text-end pt-3">¥<%= @post.total_price %></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+              <div class="card-footer bg-primary-light py-4 border-0">
+                <div class="d-flex align-items-center">
+                  <div>
+                    <h6 class="text-secondary">ご予約に関して</h6>
+                    <p class="text-sm text-secondary opacity-8 mb-0">予約後万が一キャンセルが発生する場合は必ずキャンセル手続きを行ってください。 <a href="#" class="text-reset ms-3">詳細はこちら</a></p>
+                  </div>
+                </div>                
+              </div>
+              <br>
+
+              <!-- 身分証判定 -->
+              <% if @user.id_cert %>
+                <% @cert_flag = 1 %>
+              <% else %>
+                <% @cert_flag = 0 %>
+              <% end %>
+
+              <div class="col text-center text-sm-end">
+                <% if @flag == 1 && @cert_flag == 1 %>
+                  <%= f.submit "予約を確定する", class: "btn btn-primary px-3 text-secondary" %>    
+                <% elsif @flag == 0 %>
+                  <p>クレジットーカード登録を行ってください</p>
+                <% elsif @cert_flag == 0 %>
+                  <p>身分証の確認が完了していません</p><br>
+                  <%= link_to '設定を開く', edit_user_registration_path, data: {"turbolinks" => false}%>
+                <% else %>
+                <p>⚠️クレジットーカード登録を行ってください</p>
+                <p>⚠️身分証の確認が完了していません</p><br>
+                <%= link_to '設定を開く', edit_user_registration_path, data: {"turbolinks" => false}%>
+                <% end %>
+                
+                
+              </div>
+              <%= link_to '戻る', "/posts/#{@post_id}", class: "text-secondary" %>
+            </div>
+          </div>
+          
+
+          
+        </div>
+      </div>
+    <% end %>
+    </section>
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+  </body>
+</html>

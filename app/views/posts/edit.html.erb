@@ -1,6 +1,267 @@
-<h1>Editing Post</h1>
+<!DOCTYPE html>
+<html lang="ja">
+  <body style="padding-top: 72px;">
+    <%= form_with model: @post, local: true do |f| %>
 
-<%= render 'form', post: @post %>
+  <!--TODO: このビジネスユーザーが承認されているカテゴリのみ表示する-->
+    
+    <section class="py-5">
+      <div class="container">
+        <div class="row form-block">
+          <div class="col-lg-4">
+            <h4>施術カテゴリ</h4>
+            <p class="text-muted text-sm">登録する施術カテゴリを右の一覧から選択してください。</p>
+          </div>
+          <div class="col-lg-7 ms-auto">
+            <div class="mb-4">
 
-<%= link_to 'Show', @post %> |
-<%= link_to 'Back', posts_path %>
+                <%= f.label :category_id, '施術カテゴリ', class: "form-label" %><br>
+                <%= f.collection_select(:category_id, Category.where(id: @business_user.category_id), :id, :name, {prompt: "カテゴリ"}, {class: "text-muted form-select w-100"}) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="py-5">
+      <div class="container">
+
+          <div class="row form-block">
+            <div class="col-lg-4">
+              <h4>サービス情報</h4>
+            </div>
+
+            <div class="col-lg-7 ms-auto">
+              <div class="mb-4">
+                
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <%= f.label :title, 'サービス名', class: "form-label" %>
+                      <%= f.text_field :title, class:"form-control" %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4 form-group">
+                    <%= f.label :content, 'サービス説明', class: "form-label" %>
+                    <%= f.text_area :content, class:"form-control", rows: "4" %>
+                  </div>
+                </div>
+              </div>
+
+
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <%= f.label :time, "施術時間", class: "form-label" %><br />
+                    <%= f.time_field :time, class:"form-control", value: @post.time, min:"60", max:"08:00", step:"60"%>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- 料金 -->
+    <section class="py-5">
+      <div class="container">
+
+          <div class="row form-block">
+            <div class="col-lg-4">
+              <h4>サービス料金</h4>
+            </div>
+
+            <div class="col-lg-7 ms-auto">
+              <div class="mb-4">
+                
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <%= f.label :price, 'サービス料金', class: "form-label" %>
+                      <%= f.text_field :price, class:"form-control", id: "price" %>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <%= f.label :service_fee, '手数料(20%)', class: "form-label" %>
+                      <%= f.text_field :service_fee, class:"form-control", id: "service_fee", readonly: true %>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <%= f.label :trans_fee, '訪問料(固定額)', class: "form-label" %>
+                      <%= f.text_field :trans_fee, class:"form-control", value: @post.trans_fee, readonly: true %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <%= f.label :total_price, '合計料金', class: "form-label" %>
+                      <%= f.text_field :total_price, class:"form-control", id: "total_price", readonly: true %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <%= f.label :cancel_price, 'キャンセル料金', class: "form-label" %>
+                      <%= f.text_field :cancel_price, class:"form-control", value: @post.cancel_price %>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+            </div>
+          </div>
+      </div>
+    </section>
+    
+    
+    <section class="py-5">
+      <div class="container">
+        <div class="row form-block">
+          <div class="col-lg-4">
+            <h4>イメージ写真</h4>
+            <p class="text-muted text-sm">メニューに掲載する画像を登録してください。</p>
+          </div>
+
+          <div class="col-lg-7 ms-auto">
+            <div class="mb-4">         
+                <%= f.file_field :image, id: :menu_img %>
+                <div class="gallery mb-3 ml-n1 mr-n1">
+                  <div class="col-lg-4 col-6 px-1 mb-2">
+                    <% if post.image.url.nil? %>
+                      <%= image_tag 'media/images/background.jpg', id: :img_prev, class:"img-fluid dropzone" %>
+                    <% else %>
+                      <%= image_tag @post.image.url, id: :img_prev, class:"img-fluid dropzone" %>
+                    <% end %>
+                    
+                    <script type="text/javascript">
+                    $(function() {
+                      function readURL(input) {
+                          if (input.files && input.files[0]) {
+                          var reader = new FileReader();
+                          reader.onload = function (e) {
+                      $('#img_prev').attr('src', e.target.result);
+                          }
+                          reader.readAsDataURL(input.files[0]);
+                          }
+                      }
+                      $("#menu_img").change(function(){
+                          readURL(this);
+                      });
+                    });
+                  </script>
+                  </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row form-block flex-column flex-sm-row">
+          <div class="col text-center text-sm-start"><a class="btn btn-link text-muted" href="/"> <i class="fa-chevron-left fa me-2"></i>トップへ戻る</a>
+          </div>
+          <div class="col text-center text-sm-end actions">
+          
+            <%= f.hidden_field :business_user_id, value: current_business_user.id %>
+            <%= f.hidden_field :business_user_name, value: current_business_user.name %>
+            <%= link_to "メニューを削除", "/posts/#{@post.id}", data: { confirm: 'このメニューを削除しますか？', method:"delete"}, class: "btn btn-link ps-0 text-secondary" %>
+            <%= f.submit '変更を保存', class:"btn btn-primary text-secondary" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+
+    <script>
+        jQuery(document).bind('ready ajaxComplete', function() {
+      $('.select-drop').change(function() {
+          $(this).parent().submit();
+        });
+    });
+    </script>
+
+    <script>
+      $(function(){
+      	var value1 = 0.2; // service fee (20%)
+        var value2 = 1000; // Transportation fee (fixed value)
+
+      	var tagInput = $('#price'); // 入力対象のinputタグID名
+      	var tagOutput1 = $('#service_fee'); // 出力対象のinputタグID名
+        var tagOutput2 = $('#total_price'); // 出力対象のinputタグID名
+      	tagInput.on('change', function() {
+      		
+          var str = $(this).val();
+      		var num = Number(str.replace(/[^0-9]/g, '')); // 整数以外の文字列を削除
+
+          
+
+      		$(this).val(num);
+      		if(num != 0) {
+      			var fee = num * value1;
+      			tagOutput1.val(fee);
+
+            var total = num + fee + value2;
+            tagOutput2.val(total);
+      		}
+      	});
+      });
+    </script>
+
+
+
+  </body>
+</html>

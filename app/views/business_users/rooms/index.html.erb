@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <body style="padding-top: 72px;">
+
+    <section class="py-5">
+      <div class="container">
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb ps-0  justify-content-start">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="user-account.html">マイアカウント</a></li>
+          <li class="breadcrumb-item active">チャット   </li>
+        </ol>
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <!-- <h1 class="hero-heading mb-0">Inbox</h1><a class="btn btn-link text-muted" href="#">Archived Messages</a> -->
+        </div>
+
+        <% @reserves.each do |reserve| %>
+        
+        
+          
+            <div class="row">
+              <%= link_to business_users_room_path(reserve), class:"shadow mb-5 list-group-item list-group-item-action p-4", data: { turbolinks: false} do %>
+              <div class="col-9 col-lg-4 align-self-center mb-3 mb-lg-0">
+                <div class="d-flex align-items-center mb-1 mb-lg-3">
+                  <h2 class="h5 mb-0"><%= reserve.user.name %></h2>
+                  <%= image_pack_tag "default_user_image.png", :class => "avatar avatar-sm avatar-border-white ms-3" %>
+                </div>
+                <!--<h2 class="h5 mb-0"><%= reserve.post.title %></h2>-->
+                <p class="text-sm text-muted"><%= reserve.day %></p>
+                <!-- <%= reserve.start_time %> -->
+                
+              </div>
+              <div class="col-10 ms-auto col-lg-7">
+                <div class="row">
+                  <div class="col-md-8 py-3">
+                    <!--<p class="text-sm mb-0">TODO: ビューティシャンユーザーの自己紹介を掲載</p>-->
+                  </div>
+                  <div class="col-md-4 text-end py-3">
+                    <!-- <p class="text-sm">February 16, 2019</p> -->
+                  </div>
+                </div>
+              </div>
+            <% end %>
+        <% end %>
+
+      </div>
+    </section>
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<h1>Adminチャットルームの一覧</h1>
+<% @reservations.each do |reservation| %>
+  <div>
+    <%= reservation.user.name %>
+    <%= reservation.day %>
+    <%= link_to "DM", business_users_room_path(reservation) %>
+  </div>
+<% end %>
+
+
+<h1>Adminチャットルームの一覧</h1>
+<% @reservations.each do |reservation| %>
+  <div>
+    <%= reservation.user.name %>
+    <%= reservation.day %>
+    <%= link_to "DM", business_users_room_path(reservation) %>
+  </div>
+<% end %>

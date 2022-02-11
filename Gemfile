@@ -12,7 +12,8 @@ gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
+#gem 'webpacker', '~> 4.0'
+gem 'webpacker', '~> 5.1', '>= 5.1.1'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -68,6 +69,24 @@ gem 'jp_prefecture'
 # Image upload
 gem 'carrierwave', '~> 2.0'
 gem "mini_magick"
+gem 'carrierwave-data-uri'
 
-#gem 'bootstrap-select-rails'
+# 決済
+gem 'payjp'
+
+#予約（カレンダー）
+gem "simple_calendar", "~> 2.0"
+
+gem 'active_hash'
+
+# LINE連携
+gem 'omniauth-line'
+
+# Admin
+gem 'cancancan'
+gem 'rails_admin', github: 'railsadminteam/rails_admin'
+
+# PDF
+gem 'wicked_pdf', "1.4.0"
+gem 'wkhtmltopdf-binary'
 

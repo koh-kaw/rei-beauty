@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <body style="padding-top: 72px;">
 
     <section class="py-5">
@@ -7,363 +7,144 @@
         <div class="row">
           <div class="col-lg-3 me-lg-auto">
             <div class="card border-0 shadow mb-6 mb-lg-0">
-              <div class="card-header bg-gray-100 py-4 border-0 text-center"><a class="d-inline-block" href="#"><img class="d-block avatar avatar-xxl p-2 mb-2" src="img/avatar/avatar-10.jpg" alt=""></a>
-                <h5>テスト施術者</h5>
-                <p class="text-muted text-sm mb-0">東京都 </p>
+              <div class="card-header bg-gray-100 py-4 border-0 text-center">
+
+              <a class="d-inline-block" href="#">
+              <% if @business_user.image.url.nil? %>
+                <%= image_pack_tag "default_user_image.png", :class => "d-block avatar avatar-xxl p-2 mb-2" %>
+              <% else %>
+                <%= image_tag @business_user.image.url, :class => "d-block avatar avatar-xxl p-2 mb-2" %>
+              <% end %>
+              </a>
+              
+                <h5><%= @business_user.name %></h5>
+                <p class="text-muted text-sm mb-0">
+                東京都
+                </p>
               </div>
+
               <div class="card-body p-4">
                 <div class="d-flex align-items-center mb-3">
-                  <div class="icon-rounded icon-rounded-sm bg-primary-light flex-shrink-0 me-2">
-                    <svg class="svg-icon text-primary svg-icon-md">
-                      <use xlink:href="#diploma-1"> </use>
-                    </svg>
+
+                  <div class="text-center">
+                    <p class="text-secondary text-sm"><i class="fa fa-heart text-secondary"></i> <%= @business_user.favorites.count %> 人からお気に入り登録されています</p>
+                    <% if current_user %>
+                      <% if current_user.already_favorited?(@business_user) %>
+                        <p><i class="fa fa-heart text-primary"></i><%= link_to 'お気に入りを取り消す', business_user_favorites_path(@business_user), method: :delete, class:"text-primary text-sm" %></p>
+                      <% else %>
+                        <p><i class="fa fa-heart text-primary"></i><%= link_to 'お気に入りに登録', business_user_favorites_path(@business_user), method: :post, class:"text-primary text-sm" %></p>
+                      <% end %>
+                    <% end %>
                   </div>
-                  <div>
-                    <p class="mb-0">2877 reviews</p>
-                  </div>
+
+                  
                 </div>
+
                 <div class="d-flex align-items-center mb-3">
-                  <div class="icon-rounded icon-rounded-sm bg-primary-light flex-shrink-0 me-2">
-                    <svg class="svg-icon text-primary svg-icon-md">
-                      <use xlink:href="#checkmark-1"> </use>
-                    </svg>
+                  <div class="text-left">
+                  <p class="text-sm">📜 施術カテゴリ</p>
+                    <% @delivery_categories.each do |c| %>
+                      ・<%= Category.find(c.category_id).name %><br>
+                    <% end %>
                   </div>
-                  <div>
-                    <p class="mb-0">Verified</p>
                   </div>
+
+                <div class="text-left">
+
+                  <div class="text-left">
+                    <p class="text-sm">🗺 対応エリア</p>
+                    <% @areas.each do |area| %>
+                      ・<%= Ward.find(area.ward_id).name %><br>
+                    <% end %>
+                  </div>
+
                 </div>
-                <hr>
-                <h6>Jack provided</h6>
-                <ul class="card-text text-muted">
-                  <li>Government ID</li>
-                  <li>Email address</li>
-                  <li>Phone number</li>
-                </ul>
               </div>
+
             </div>
           </div>
           <div class="col-lg-9 ps-lg-5">
-            <h1 class="hero-heading mb-0">Hello!</h1>
+            <h1 class="hero-heading mb-0">Profile</h1>
             <div class="text-block">
-              <p> <span class="badge badge-secondary-light">Joined in 2011</span></p>
-              <p class="text-muted">Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.  </p>
-              <p class="text-muted">He must have tried it a hundred times, shut his eyes so that he wouldn't have to look at the floundering legs, and only stopped when he began to feel a mild, dull pain there that he had never felt before.  </p>
+              <p> <span class="badge badge-secondary-light">Joined in <%= @business_user.created_at.strftime('%Y年%m月') %></span></p>
+              <p class="text-muted"><%= @business_user.self_introduction %></p>
             </div>
             <div class="text-block">
-              <h4 class="mb-5">Jack's Listings</h4>
+              <h4 class="mb-5">提供メニュー</h4>
               <div class="row">
-                <!-- place item-->
-                <div class="col-sm-6 col-lg-4 mb-30px hover-animate" data-marker-id="59c0c8e33b1527bfe2abaf92">
-                  <div class="card h-100 border-0 shadow">
-                    <div class="card-img-top overflow-hidden gradient-overlay"> <img class="img-fluid" src="img/photo/photo-1484154218962-a197022b5858.jpg" alt="Modern, Well-Appointed Room"/><a class="tile-link" href="detail-rooms.html"></a>
-                      <div class="card-img-overlay-bottom z-index-20">
-                        <div class="d-flex text-white text-sm align-items-center"><img class="avatar avatar-border-white flex-shrink-0 me-2" src="img/avatar/avatar-0.jpg" alt="Pamela"/>
-                          <div>Pamela</div>
+                <% @post.each do |post| %>
+                  <% if post.image.url.nil? %>
+                  <% else %>
+                  <!-- venue item-->
+                    <div class="col-sm-6 col-xl-4 mb-5 hover-animate" data-marker-id="59c0c8e33b1527bfe2abaf92">
+                      <div class="card h-100 border-0 shadow">
+                        <div class="card-img-top overflow-hidden dark-overlay bg-cover" style="min-height: 200px;">
+
+                          <%= link_to image_tag(post.image.url, class:"card-img-top overflow-hidden dark-overlay bg-cover", style: "min-height: 200px;"), "/posts/#{post.id}", class:"title-link" %>
+                          <div class="card-img-overlay-bottom z-index-20">
+                            <h4 class="text-white text-shadow"><%= link_to(post.title, "/posts/#{post.id}") %></h4>
+                            <p class="mb-2 text-xs"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-gray-300">                    </i>
+                            </p>
+                          </div>
+
+                          <div class="card-img-overlay-top d-flex justify-content-between align-items-center">
+                            <div class="badge badge-transparent badge-pill px-3 py-2"><%= post.category.name %></div><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
+                              <svg class="svg-icon text-white">
+                                <use xlink:href="#heart-1"> </use>
+                              </svg></a>
+                            </div>
+                          </div>
+
+                          <div class="card-body">
+                            <p class="text-sm text-muted mb-3"> <%= link_to(post.content, "/posts/#{post.id}") %></p>
+                            <p class="text-sm text-muted text-uppercase mb-1">By <a href="/posts" class="text-dark">テストビューティシャン</a></p>
+                            <% if business_user_signed_in? && current_business_user.id.to_s == params[:id] %>
+                              <p class="text-sm text-muted text-uppercase mb-1"><a href="/posts/<%= post.id %>/edit" class="text-secondary">編集</a></p>
+                            <% end%>
+                            </p>
+                          </div>
                         </div>
                       </div>
-                      <div class="card-img-overlay-top text-end"><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
-                          <svg class="svg-icon text-white">
-                            <use xlink:href="#heart-1"> </use>
-                          </svg></a></div>
                     </div>
-                    <div class="card-body d-flex align-items-center">
-                      <div class="w-100">
-                        <h6 class="card-title"><a class="text-decoration-none text-dark" href="detail-rooms.html">Modern, Well-Appointed Room</a></h6>
-                        <div class="d-flex card-subtitle mb-3">
-                          <p class="flex-grow-1 mb-0 text-muted text-sm">Private room</p>
-                          <p class="flex-shrink-1 mb-0 card-stars text-xs text-end"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i>
-                          </p>
-                        </div>
-                        <p class="card-text text-muted"><span class="h4 text-primary">$80</span> per night</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- place item-->
-                <div class="col-sm-6 col-lg-4 mb-30px hover-animate" data-marker-id="59c0c8e322f3375db4d89128">
-                  <div class="card h-100 border-0 shadow">
-                    <div class="card-img-top overflow-hidden gradient-overlay"> <img class="img-fluid" src="img/photo/photo-1426122402199-be02db90eb90.jpg" alt="Cute Quirky Garden apt, NYC adjacent"/><a class="tile-link" href="detail-rooms.html"></a>
-                      <div class="card-img-overlay-bottom z-index-20">
-                        <div class="d-flex text-white text-sm align-items-center"><img class="avatar avatar-border-white flex-shrink-0 me-2" src="img/avatar/avatar-7.jpg" alt="John"/>
-                          <div>John</div>
-                        </div>
-                      </div>
-                      <div class="card-img-overlay-top text-end"><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
-                          <svg class="svg-icon text-white">
-                            <use xlink:href="#heart-1"> </use>
-                          </svg></a></div>
-                    </div>
-                    <div class="card-body d-flex align-items-center">
-                      <div class="w-100">
-                        <h6 class="card-title"><a class="text-decoration-none text-dark" href="detail-rooms.html">Cute Quirky Garden apt, NYC adjacent</a></h6>
-                        <div class="d-flex card-subtitle mb-3">
-                          <p class="flex-grow-1 mb-0 text-muted text-sm">Entire apartment</p>
-                          <p class="flex-shrink-1 mb-0 card-stars text-xs text-end"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-gray-300">                                  </i>
-                          </p>
-                        </div>
-                        <p class="card-text text-muted"><span class="h4 text-primary">$121</span> per night</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- place item-->
-                <div class="col-sm-6 col-lg-4 mb-30px hover-animate" data-marker-id="59c0c8e3a31e62979bf147c9">
-                  <div class="card h-100 border-0 shadow">
-                    <div class="card-img-top overflow-hidden gradient-overlay"> <img class="img-fluid" src="img/photo/photo-1512917774080-9991f1c4c750.jpg" alt="Modern Apt - Vibrant Neighborhood!"/><a class="tile-link" href="detail-rooms.html"></a>
-                      <div class="card-img-overlay-bottom z-index-20">
-                        <div class="d-flex text-white text-sm align-items-center"><img class="avatar avatar-border-white flex-shrink-0 me-2" src="img/avatar/avatar-8.jpg" alt="Julie"/>
-                          <div>Julie</div>
-                        </div>
-                      </div>
-                      <div class="card-img-overlay-top text-end"><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
-                          <svg class="svg-icon text-white">
-                            <use xlink:href="#heart-1"> </use>
-                          </svg></a></div>
-                    </div>
-                    <div class="card-body d-flex align-items-center">
-                      <div class="w-100">
-                        <h6 class="card-title"><a class="text-decoration-none text-dark" href="detail-rooms.html">Modern Apt - Vibrant Neighborhood!</a></h6>
-                        <div class="d-flex card-subtitle mb-3">
-                          <p class="flex-grow-1 mb-0 text-muted text-sm">Entire apartment</p>
-                          <p class="flex-shrink-1 mb-0 card-stars text-xs text-end"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-gray-300">                                  </i><i class="fa fa-star text-gray-300">                                  </i>
-                          </p>
-                        </div>
-                        <p class="card-text text-muted"><span class="h4 text-primary">$75</span> per night</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- place item-->
-                <div class="col-sm-6 col-lg-4 mb-30px hover-animate" data-marker-id="59c0c8e3503eb77d487e8082">
-                  <div class="card h-100 border-0 shadow">
-                    <div class="card-img-top overflow-hidden gradient-overlay"> <img class="img-fluid" src="img/photo/photo-1494526585095-c41746248156.jpg" alt="Sunny Private Studio-Apartment"/><a class="tile-link" href="detail-rooms.html"></a>
-                      <div class="card-img-overlay-bottom z-index-20">
-                        <div class="d-flex text-white text-sm align-items-center"><img class="avatar avatar-border-white flex-shrink-0 me-2" src="img/avatar/avatar-9.jpg" alt="Barbora"/>
-                          <div>Barbora</div>
-                        </div>
-                      </div>
-                      <div class="card-img-overlay-top text-end"><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
-                          <svg class="svg-icon text-white">
-                            <use xlink:href="#heart-1"> </use>
-                          </svg></a></div>
-                    </div>
-                    <div class="card-body d-flex align-items-center">
-                      <div class="w-100">
-                        <h6 class="card-title"><a class="text-decoration-none text-dark" href="detail-rooms.html">Sunny Private Studio-Apartment</a></h6>
-                        <div class="d-flex card-subtitle mb-3">
-                          <p class="flex-grow-1 mb-0 text-muted text-sm">Shared room</p>
-                          <p class="flex-shrink-1 mb-0 card-stars text-xs text-end"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-gray-300">                                  </i>
-                          </p>
-                        </div>
-                        <p class="card-text text-muted"><span class="h4 text-primary">$93</span> per night</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- place item-->
-                <div class="col-sm-6 col-lg-4 mb-30px hover-animate" data-marker-id="59c0c8e39aa2eed0626e485d">
-                  <div class="card h-100 border-0 shadow">
-                    <div class="card-img-top overflow-hidden gradient-overlay"> <img class="img-fluid" src="img/photo/photo-1522771739844-6a9f6d5f14af.jpg" alt="Mid-Century Modern Garden Paradise"/><a class="tile-link" href="detail-rooms.html"></a>
-                      <div class="card-img-overlay-bottom z-index-20">
-                        <div class="d-flex text-white text-sm align-items-center"><img class="avatar avatar-border-white flex-shrink-0 me-2" src="img/avatar/avatar-10.jpg" alt="Jack"/>
-                          <div>Jack</div>
-                        </div>
-                      </div>
-                      <div class="card-img-overlay-top text-end"><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
-                          <svg class="svg-icon text-white">
-                            <use xlink:href="#heart-1"> </use>
-                          </svg></a></div>
-                    </div>
-                    <div class="card-body d-flex align-items-center">
-                      <div class="w-100">
-                        <h6 class="card-title"><a class="text-decoration-none text-dark" href="detail-rooms.html">Mid-Century Modern Garden Paradise</a></h6>
-                        <div class="d-flex card-subtitle mb-3">
-                          <p class="flex-grow-1 mb-0 text-muted text-sm">Entire house</p>
-                          <p class="flex-shrink-1 mb-0 card-stars text-xs text-end"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i>
-                          </p>
-                        </div>
-                        <p class="card-text text-muted"><span class="h4 text-primary">$115</span> per night</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- place item-->
-                <div class="col-sm-6 col-lg-4 mb-30px hover-animate" data-marker-id="59c0c8e39aa2edasd626e485d">
-                  <div class="card h-100 border-0 shadow">
-                    <div class="card-img-top overflow-hidden gradient-overlay"> <img class="img-fluid" src="img/photo/photo-1488805990569-3c9e1d76d51c.jpg" alt="Brooklyn Life, Easy to Manhattan"/><a class="tile-link" href="detail-rooms.html"></a>
-                      <div class="card-img-overlay-bottom z-index-20">
-                        <div class="d-flex text-white text-sm align-items-center"><img class="avatar avatar-border-white flex-shrink-0 me-2" src="img/avatar/avatar-11.jpg" alt="Stuart"/>
-                          <div>Stuart</div>
-                        </div>
-                      </div>
-                      <div class="card-img-overlay-top text-end"><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
-                          <svg class="svg-icon text-white">
-                            <use xlink:href="#heart-1"> </use>
-                          </svg></a></div>
-                    </div>
-                    <div class="card-body d-flex align-items-center">
-                      <div class="w-100">
-                        <h6 class="card-title"><a class="text-decoration-none text-dark" href="detail-rooms.html">Brooklyn Life, Easy to Manhattan</a></h6>
-                        <div class="d-flex card-subtitle mb-3">
-                          <p class="flex-grow-1 mb-0 text-muted text-sm">Private room</p>
-                          <p class="flex-shrink-1 mb-0 card-stars text-xs text-end"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-gray-300">                                  </i>
-                          </p>
-                        </div>
-                        <p class="card-text text-muted"><span class="h4 text-primary">$123</span> per night</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  <% end %>
+                <% end %>
               </div>
-            </div>
+
+
             <div class="text-block">
               <p class="subtitle text-sm text-primary">Reviews    </p>
-              <h5 class="mb-4">Listing Reviews </h5>
+              <h5 class="mb-4">レビュー </h5>
+              
+              <% @reviews.each do |r| %>
               <div class="d-flex d-block d-sm-flex review">
-                <div class="text-md-center flex-shrink-0 me-4 me-xl-5"><img class="d-block avatar avatar-xl p-2 mb-2" src="img/avatar/avatar-8.jpg" alt="Padmé Amidala"><span class="text-uppercase text-muted text-sm">Dec 2018</span></div>
+                <div class="text-md-center flex-shrink-0 me-4 me-xl-5"><%= image_pack_tag "default_user_image.png", :class => "d-block avatar avatar-xl p-2 mb-2" %></div>
                 <div>
-                  <h6 class="mt-2 mb-1">Padmé Amidala</h6>
-                  <div class="mb-2"><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i>
-                  </div>
-                  <p class="text-muted text-sm">One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections     </p>
-                </div>
-              </div>
-              <div class="d-flex d-block d-sm-flex review">
-                <div class="text-md-center flex-shrink-0 me-4 me-xl-5"><img class="d-block avatar avatar-xl p-2 mb-2" src="img/avatar/avatar-2.jpg" alt="Luke Skywalker"><span class="text-uppercase text-muted text-sm">Dec 2018</span></div>
-                <div>
-                  <h6 class="mt-2 mb-1">Luke Skywalker</h6>
-                  <div class="mb-2"><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-gray-200"></i>
-                  </div>
-                  <p class="text-muted text-sm">The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. &quot;What's happened to me?&quot; he thought. It wasn't a dream.     </p>
-                </div>
-              </div>
-              <div class="d-flex d-block d-sm-flex review">
-                <div class="text-md-center flex-shrink-0 me-4 me-xl-5"><img class="d-block avatar avatar-xl p-2 mb-2" src="img/avatar/avatar-3.jpg" alt="Princess Leia"><span class="text-uppercase text-muted text-sm">Dec 2018</span></div>
-                <div>
-                  <h6 class="mt-2 mb-1">Princess Leia</h6>
-                  <div class="mb-2"><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-gray-200"></i><i class="fa fa-xs fa-star text-gray-200"></i>
-                  </div>
-                  <p class="text-muted text-sm">His room, a proper human room although a little too small, lay peacefully between its four familiar walls. A collection of textile samples lay spread out on the table.     </p>
-                </div>
-              </div>
-              <div class="d-flex d-block d-sm-flex review">
-                <div class="text-md-center flex-shrink-0 me-4 me-xl-5"><img class="d-block avatar avatar-xl p-2 mb-2" src="img/avatar/avatar-4.jpg" alt="Jabba Hut"><span class="text-uppercase text-muted text-sm">Dec 2018</span></div>
-                <div>
-                  <h6 class="mt-2 mb-1">Jabba Hut</h6>
-                  <div class="mb-2"><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i>
-                  </div>
-                  <p class="text-muted text-sm">Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.     </p>
-                </div>
-              </div>
-              <div class="py-5">
-                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#leaveReview" aria-expanded="false" aria-controls="leaveReview">Leave a review</button>
-                <div class="collapse mt-4" id="leaveReview">
-                  <h5 class="mb-4">Leave a review</h5>
-                  <form class="form" id="contact-form" method="get" action="#">
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <div class="mb-4">
-                          <label class="form-label" for="name">Your name *</label>
-                          <input class="form-control" type="text" name="name" id="name" placeholder="Enter your name" required="required">
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="mb-4">
-                          <label class="form-label" for="rating">Your rating *</label>
-                          <select class="form-select focus-shadow-0" name="rating" id="rating">
-                            <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733; (5/5)</option>
-                            <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</option>
-                            <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734; (3/5)</option>
-                            <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734; (2/5)</option>
-                            <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734; (1/5)</option>
-                          </select>
-                        </div>
-                      </div>
+                  <h6 class="mt-2 mb-1">テストユーザー</h6>
+
+                  <% if r.rate == 5 then %>
+                    <div class="mb-2"><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i>
                     </div>
-                    <div class="mb-4">
-                      <label class="form-label" for="email">Your email *</label>
-                      <input class="form-control" type="email" name="email" id="email" placeholder="Enter your  email" required="required">
+                  <% elsif r.rate == 4 then%>
+                    <div class="mb-2"><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-gray-200"></i>
                     </div>
-                    <div class="mb-4">
-                      <label class="form-label" for="review">Review text *</label>
-                      <textarea class="form-control" rows="4" name="review" id="review" placeholder="Enter your review" required="required"></textarea>
+                  <% elsif r.rate == 3 then%>
+                    <div class="mb-2"><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-primary"></i><i class="fa fa-xs fa-star text-gray-200"></i><i class="fa fa-xs fa-star text-gray-200"></i>
                     </div>
-                    <button class="btn btn-primary" type="submit">Post review</button>
-                  </form>
+                  <% end %>
+                  
+                  <p class="text-muted text-sm"><%= r.comment %>     </p>
                 </div>
               </div>
+              <% end %>
+
+
+
             </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- Footer-->
-    <footer class="position-relative z-index-10 d-print-none">
-      <!-- Main block - menus, subscribe form-->
-      <div class="py-6 bg-gray-200 text-muted"> 
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-4 mb-5 mb-lg-0">
-              <div class="fw-bold text-uppercase text-dark mb-3">Directory</div>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-              <ul class="list-inline">
-                <li class="list-inline-item"><a class="text-muted text-primary-hover" href="#" target="_blank" title="twitter"><i class="fab fa-twitter"></i></a></li>
-                <li class="list-inline-item"><a class="text-muted text-primary-hover" href="#" target="_blank" title="facebook"><i class="fab fa-facebook"></i></a></li>
-                <li class="list-inline-item"><a class="text-muted text-primary-hover" href="#" target="_blank" title="instagram"><i class="fab fa-instagram"></i></a></li>
-                <li class="list-inline-item"><a class="text-muted text-primary-hover" href="#" target="_blank" title="pinterest"><i class="fab fa-pinterest"></i></a></li>
-                <li class="list-inline-item"><a class="text-muted text-primary-hover" href="#" target="_blank" title="vimeo"><i class="fab fa-vimeo"></i></a></li>
-              </ul>
-            </div>
-            <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
-              <h6 class="text-uppercase text-dark mb-3">Rentals</h6>
-              <ul class="list-unstyled">
-                <li><a class="text-muted" href="index.html">Rooms</a></li>
-                <li><a class="text-muted" href="category-rooms.html">Map on top</a></li>
-                <li><a class="text-muted" href="category-2-rooms.html">Side map</a></li>
-                <li><a class="text-muted" href="category-3-rooms.html">No map</a></li>
-                <li><a class="text-muted" href="detail-rooms.html">Room detail</a></li>
-              </ul>
-            </div>
-            <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
-              <h6 class="text-uppercase text-dark mb-3">Pages</h6>
-              <ul class="list-unstyled">
-                <li><a class="text-muted" href="compare.html">Comparison                                   </a></li>
-                <li><a class="text-muted" href="team.html">Team                                   </a></li>
-                <li><a class="text-muted" href="contact.html">Contact                                   </a></li>
-              </ul>
-            </div>
-            <div class="col-lg-4">
-              <h6 class="text-uppercase text-dark mb-3">Daily Offers & Discounts</h6>
-              <p class="mb-3"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. At itaque temporibus.</p>
-              <form action="#" id="newsletter-form">
-                <div class="input-group mb-3">
-                  <input class="form-control bg-transparent border-dark border-end-0" type="email" placeholder="Your Email Address" aria-label="Your Email Address">
-                  <button class="btn btn-outline-dark border-start-0" type="submit"> <i class="fa fa-paper-plane text-lg"></i></button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Copyright section of the footer-->
-      <div class="py-4 fw-light bg-gray-800 text-gray-300">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-md-6 text-center text-md-start">
-              <p class="text-sm mb-md-0">&copy; 2021, Your company.  All rights reserved.</p>
-            </div>
-            <div class="col-md-6">
-              <ul class="list-inline mb-0 mt-2 mt-md-0 text-center text-md-end">
-                <li class="list-inline-item"><img class="w-2rem" src="img/visa.svg" alt="..."></li>
-                <li class="list-inline-item"><img class="w-2rem" src="img/mastercard.svg" alt="..."></li>
-                <li class="list-inline-item"><img class="w-2rem" src="img/paypal.svg" alt="..."></li>
-                <li class="list-inline-item"><img class="w-2rem" src="img/western-union.svg" alt="..."></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
+
     <!-- JavaScript files-->
     <script>
       // ------------------------------------------------------- //
@@ -390,22 +171,10 @@
       injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
       
     </script>
-    <!-- jQuery-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <!-- Bootstrap JS bundle - Bootstrap + PopperJS-->
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Magnific Popup - Lightbox for the gallery-->
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-    <!-- Smooth scroll-->
-    <script src="vendor/smooth-scroll/smooth-scroll.polyfills.min.js"></script>
-    <!-- Bootstrap Select-->
-    <script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <!-- Object Fit Images - Fallback for browsers that don't support object-fit-->
-    <script src="vendor/object-fit-images/ofi.min.js"></script>
+
     <!-- Swiper Carousel                       -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
     <script>var basePath = ''</script>
-    <!-- Main Theme JS file    -->
-    <script src="js/theme.js"></script>
+    
   </body>
 </html>

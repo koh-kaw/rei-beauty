@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <body style="padding-top: 72px;">
+    <section class="py-5">
+    
+    <%= form_for [@business_user, @business_user.off_business.new] do |f| %>
+      <%= f.hidden_field :business_user_id, value: @business_user.id %>
+      <div class="container">
+        <div class="row">
+        
+          <div class="col-lg-7">
+            <p class="subtitle text-primary">営業時間設定</p>
+            <h1 class="h2 mb-5"> 受付時間外に設定する日時を確認してください       </h1>
+            <div class="text-block">
+              <div class="alert alert-warning text-sm mb-3">
+                <div class="d-flex align-items-center">
+                  <svg class="svg-icon svg-icon svg-icon-light w-2rem h-2rem me-3 text-reset flex-shrink-0">
+                    <use xlink:href="#heart-1"> </use>
+                  </svg>
+                  <div>選択した時間は予約不可となります。</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-block">
+              <h5 class="mb-4">受付時間外日時</h5>
+              <div class="row mb-3">
+                <div class="col-md-6 d-flex align-items-center mb-3 mb-md-0">
+                  <!--<div class="date-tile me-3"> -->
+
+                  <!--</div>-->
+
+                  <p class="text-sm mb-0">
+                    <%= f.label :off_day, '日' %>
+                    <%= f.date_field :off_day, class: 'form-control', value: @off_day, readonly:true, required: true %>
+                    
+                    <%= f.label :off_time, '時' %>
+                    <%= f.time_field :off_time, class: 'form-control', value: @off_time, readonly:true, required: true %>
+
+                    <%= f.hidden_field :business_user_id, value: current_business_user.id %>
+                    
+
+                  </p>
+                </div>
+
+              </div>
+            </div>
+              
+              
+            <!--  <%= link_to '戻る', "/posts/#{@post_id}", class: "text-secondary" %> -->
+
+
+
+
+
+
+          <%= f.submit "確定する", class: "btn btn-primary px-3 text-secondary" %>    
+        <%= link_to '戻る', :back, class: "text-secondary" %>
+          
+        </div>
+      </div>
+    <% end %>
+    </section>
+    <!-- Footer-->
+
+  </body>
+</html>

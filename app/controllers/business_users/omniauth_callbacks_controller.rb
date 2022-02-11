@@ -8,6 +8,8 @@ class BusinessUsers::OmniauthCallbacksController < Devise::OmniauthCallbacksCont
   # def twitter
   # end
 
+
+
   # More info at:
   # https://github.com/heartcombo/devise#omniauth
 
@@ -27,4 +29,6 @@ class BusinessUsers::OmniauthCallbacksController < Devise::OmniauthCallbacksCont
   # def after_omniauth_failure_path_for(scope)
   #   super(scope)
   # end
+
+
 end

@@ -5432,9 +5432,12 @@ fieldset:disabled .btn {
 }
 
 .alert-primary {
-  color: #8f3150;
+  /*color: #8f3150;
   background-color: #fde5ed;
-  border-color: #fde5ed;
+  border-color: #fde5ed;*/
+  color: #084298;
+  background-color: #cfe2ff;
+  border-color: #b6d4fe;
 }
 
 .alert-primary .alert-link {

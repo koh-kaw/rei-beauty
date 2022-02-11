@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <body style="padding-top: 72px;">
+
+    <section class="py-5">
+      <div class="container">
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb ps-0  justify-content-start">
+          <li class="breadcrumb-item"><a href="/">ホーム</a></li>
+          <li class="breadcrumb-item active">マイアカウント   </li>
+        </ol>
+        <h1 class="hero-heading mb-0">マイアカウント</h1>
+        <p class="text-muted mb-5">アカウント管理メニュー</p>
+        <div class="row">
+          <div class="col-6 col-md-4 mb-30px">
+            <div class="card h-100 border-0 shadow hover-animate">
+              <div class="card-body">
+                <div class="icon-rounded bg-secondary-light mb-3">
+                  <svg class="svg-icon text-secondary w-2rem h-2rem">
+                    <use xlink:href="#identity-1"> </use>
+                  </svg>
+                </div>
+                <h5 class="card-title mb-3"><a class="text-decoration-none text-dark stretched-link" href="<%= edit_user_registration_path%>">ユーザー設定</a></h5>
+                <p class="text-muted card-text text-sm">ユーザー設定情報を更新</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 mb-30px">
+            <div class="card h-100 border-0 shadow hover-animate">
+              <div class="card-body">
+                <div class="icon-rounded bg-secondary-light mb-3">
+                  <svg class="svg-icon text-secondary w-2rem h-2rem">
+                    <use xlink:href="#password-1"> </use>
+                  </svg>
+                </div>
+                <h5 class="card-title mb-3">
+                <%= link_to 'ビューティシャン募集', new_recruit_path, class:"text-decoration-none text-dark stretched-link" %>
+                <p class="text-muted card-text text-sm">ビューティシャンを募集</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 mb-30px">
+            <div class="card h-100 border-0 shadow hover-animate">
+              <div class="card-body">
+                <div class="icon-rounded bg-secondary-light mb-3">
+                  <svg class="svg-icon text-secondary w-2rem h-2rem">
+                    <use xlink:href="#pay-by-card-1"> </use>
+                  </svg>
+                </div>
+                <h5 class="card-title mb-3"><%= link_to 'お支払い設定', new_card_path, data: {"turbolinks" => false}, class:"text-decoration-none text-dark stretched-link" %></h5>
+                <p class="text-muted card-text text-sm">お支払い情報を確認</p>
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 mb-30px">
+            <div class="card h-100 border-0 shadow hover-animate">
+              <div class="card-body">
+                <div class="icon-rounded bg-secondary-light mb-3">
+                  <svg class="svg-icon text-secondary w-2rem h-2rem">
+                    <use xlink:href="#chat-app-1"> </use>
+                  </svg>
+                </div>
+                <h5 class="card-title mb-3"><a class="text-decoration-none text-dark stretched-link" href="<%=rooms_path%>">チャット</a></h5>
+                <p class="text-muted card-text text-sm">ユーザーとビューティシャン間のチャット一覧を確認</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 mb-30px">
+            <div class="card h-100 border-0 shadow hover-animate">
+              <div class="card-body">
+                <div class="icon-rounded bg-secondary-light mb-3">
+                  <svg class="svg-icon text-secondary w-2rem h-2rem">
+                    <use xlink:href="#diary-1"> </use>
+                  </svg>
+                </div>
+                <h5 class="card-title mb-3"><a class="text-decoration-none text-dark stretched-link" href="<%=your_reserves_path%>">予約一覧</a></h5>
+                <p class="text-muted card-text text-sm">予約した施術を確認</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 mb-30px">
+            <div class="card h-100 border-0 shadow hover-animate">
+              <div class="card-body">
+                <div class="icon-rounded bg-secondary-light mb-3">
+                  <svg class="svg-icon text-secondary w-2rem h-2rem">
+                    <use xlink:href="#mix-1"> </use>
+                  </svg>
+                </div>
+                <h5 class="card-title mb-3"><a class="text-decoration-none text-dark stretched-link" href="<%=mypage_path%>">マイプロフィール</a></h5>
+                <p class="text-muted card-text text-sm">マイプロフィールを確認</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+
+  </body>
+</html>

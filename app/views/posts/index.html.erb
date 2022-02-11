@@ -5,7 +5,7 @@
     <div class="container-fluid py-5 px-lg-5">
       <div class="row border-bottom mb-4">
         <div class="col-12">
-          <h1 class="display-4 mb-4">Menus</h1>
+          <h1 class="display-8 mb-4">施術メニュー</h1>
         </div>
       </div>
 
@@ -22,8 +22,13 @@
             </div>
 
             <div class="mb-4">
-              <label class="form-label" for="form_neighbourhood">施術を受けるエリア</label>
-                <h6>東京都</h6>
+              <label class="form-label" for="form_neighbourhood">施術を受けるエリア</label><br>
+              <h6>東京都</h6>
+              <%= f.collection_select(:ward_id, Ward.all, :id, :name, {prompt: "エリア"}, {class: "form-select text-muted"}) do |w| %> 
+                <%= w.label class: "text-muted" do %>
+                  <%= w.text %>
+                <% end %>
+              <% end %>
             </div>
 
             <div class="mb-4">
@@ -56,28 +61,35 @@
         <div class="col-lg-9">
           <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-4">
             <div class="mr-3">
-              <p class="mb-3 mb-md-0"><strong><% @posts.length %></strong> 件のメニューが見つかりました。</p>
+              <!-- <p class="mb-3 mb-md-0"><strong><%= @posts.count %></strong> 件の結果が見つかりました。</p> -->
             </div>
           </div>
 
           <div class="row">
             <% @posts.each do |post| %>
+            <% if post.image.url.nil? %>
+            <% else %>
+
             <!-- venue item-->
             <div class="col-sm-6 col-xl-4 mb-5 hover-animate" data-marker-id="59c0c8e33b1527bfe2abaf92">
               <div class="card h-100 border-0 shadow">
               
                 <div class="card-img-top overflow-hidden dark-overlay bg-cover" style="min-height: 200px;">
 
-                  <%= link_to image_pack_tag("logo.png", class:"card-img-top overflow-hidden dark-overlay bg-cover", style: "min-height: 200px;"), "/posts/#{post.id}", class:"title-link" %>
+                  <!-- <%= link_to image_pack_tag("logo.png", class:"card-img-top overflow-hidden dark-overlay bg-cover", style: "min-height: 200px;"), "/posts/#{post.id}", class:"title-link" %> -->
+
+                    <%= link_to image_tag(post.image.url, class:"card-img-top overflow-hidden dark-overlay bg-cover", style: "min-height: 200px;"), "/posts/#{post.id}", class:"title-link" %>
+                  
 
                   <div class="card-img-overlay-bottom z-index-20">
-                    <h4 class="text-white text-shadow"><%= link_to(post.content, "/posts/#{post.id}") %></h4>
+                    <h4 class="text-white text-shadow"><%= link_to(post.title, "/posts/#{post.id}") %></h4>
                     <p class="mb-2 text-xs"><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i><i class="fa fa-star text-gray-300">                    </i>
                     </p>
                   </div>
 
                   <div class="card-img-overlay-top d-flex justify-content-between align-items-center">
-                    <div class="badge badge-transparent badge-pill px-3 py-2">カテゴリ名</div><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
+                  <% @category = Category.find(post.category_id) %>
+                    <div class="badge badge-transparent badge-pill px-3 py-2"><%= @category.name %></div><a class="card-fav-icon position-relative z-index-40" href="javascript: void();"> 
                       <svg class="svg-icon text-white">
                         <use xlink:href="#heart-1"> </use>
                       </svg></a>
@@ -86,16 +98,14 @@
 
                 <div class="card-body">
                   <p class="text-sm text-muted mb-3"> <%= link_to(post.content, "/posts/#{post.id}") %></p>
-                  <p class="text-sm text-muted text-uppercase mb-1">By <a href="/posts" class="text-dark">施術者ユーザー名</a></p>
-                  <p class="text-sm mb-0"><a class="mr-1" href="/posts">施術者のページを見る</a>
-                  </p>
+                  <p class="text-sm text-muted text-uppercase mb-1">ビューティシャン: <a href="/business_users/<%= post.business_user_id %>" class="text-dark"><%= post.business_user_name %></a></p>
                 </div>
               </div>
             </div>
             <% end %>
+            <% end %>
           </div>
-          
-
+        
 
 
           <!-- Pagination -->

@@ -6,8 +6,8 @@
     <div class="col-md-8 col-lg-6 col-xl-5 d-flex align-items-center">
       <div class="w-100 py-5 px-md-5 px-xxl-6 position-relative">
         <div class="mb-4"><%= link_to image_pack_tag("media/images/logo.svg", alt:"Re I beauty"), "/", class:"img-fluid mb-4", style:"max-width: 4rem;"%>
-          <h2>サインアップ</h2>
-            <p class="text-muted">メールやSNSのアカウントで登録することにより下記の規約に同意したものとみなされます。</p>
+          <h2>ユーザー登録（利用者）</h2>
+            
         </div>
 
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -16,7 +16,7 @@
           <form class="form-validate">
 
               <div class="mb-4 field">
-                <%= f.label :email, class:"form-label" %><br />
+                <%= f.label :email, class:"form-label" %><span class="form-label">(半角で入力)</span>
                 <%= f.email_field :email, autocomplete: "email", class:"form-control" %>
               </div>
 
@@ -24,7 +24,7 @@
                 <div class="field">
                   <%= f.label :password, class:"form-label" %>
                   <% if @minimum_password_length %>
-                  <em class="form-label">(<%= @minimum_password_length %>文字以上で設定)</em>
+                  <em class="form-label">(<%= @minimum_password_length %>文字以上、半角で入力)</em>
                   <% end %><br />
                   <%= f.password_field :password, autocomplete: "new-password", class:"form-control" %>
                 </div>
@@ -35,18 +35,33 @@
                 <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"form-control" %>
               </div>
 
+            <div class="field mb-4">
+              <div class="form-check">
+                <%= f.check_box :agreememt, {required: true, checked: false, id:'agree', :type=> 'checkbox'} , "true" , "false" %> <a href="/pages/terms" class='text-secondary'>利用規約</a>と<a href="/pages/terms" class='text-secondary'>プライバシーポリシー</a>に同意する
+
+              </div>
+            </div>
+
               <div class="d-grid gap-2 actions">
-                <%= f.submit "Sign up", class:"btn btn-lg btn-primary text-secondary" %>
+                <%= f.submit "登録", class:"btn btn-lg btn-primary text-secondary" %>
               </div>
             <% end %>
             
-            <%= render "devise/shared/links" %>
-
 
               <hr class="my-3 hr-text letter-spacing-2" data-content="OR">
               <div class="d-grid gap-2">
-                <button class="btn btn btn-outline-primary btn-social"><i class="fa-2x fa-facebook-f fab btn-social-icon"> </i>Connect <span class="d-none d-sm-inline">with Facebook</span></button>
-                <button class="btn btn btn-outline-muted btn-social"><i class="fa-2x fa-google fab btn-social-icon"> </i>Connect <span class="d-none d-sm-inline">with Google</span></button>
+        
+                <%= button_to 'ユーザーログイン', new_user_session_path, class:"btn btn-lg btn-primary text-secondary" %>
+        
+                <%= button_to user_google_oauth2_omniauth_authorize_path, {class: "btn btn btn-outline-muted btn-social"} do %>
+                  <i class="fa-2x fa-google fab btn-social-icon"> </i> <span class="d-none d-sm-inline">Googleアカウントで登録</span>
+                <% end %>
+
+                <%= link_to user_line_omniauth_authorize_path, {method: :post} do %>
+                  <button class="btn btn btn-outline-primary btn-social"><i class="fa-2x fa-line fab btn-social-icon"> </i> <span class="d-none d-sm-inline">LINEアカウントで登録</span></button>
+                <% end %>
+
+                
               </div>
               <hr class="my-4">
               <p class="text-sm text-muted">メールやSNSのアカウントで登録することにより<a href="#">利用規約</a> 、 <a href="#">プライバシーポリシー</a>に同意したものとみなされます。</p>
@@ -62,6 +77,8 @@
         </div>
       </div>
 </div>
+
+
     <!-- JavaScript files-->
     <script>
       // ------------------------------------------------------- //
@@ -88,23 +105,10 @@
       injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
 
     </script>
-    <!-- jQuery-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <!-- Bootstrap JS bundle - Bootstrap + PopperJS-->
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Magnific Popup - Lightbox for the gallery-->
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-    <!-- Smooth scroll-->
-    <script src="vendor/smooth-scroll/smooth-scroll.polyfills.min.js"></script>
-    <!-- Bootstrap Select-->
-    <script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <!-- Object Fit Images - Fallback for browsers that don't support object-fit-->
-    <script src="vendor/object-fit-images/ofi.min.js"></script>
+
     <!-- Swiper Carousel                       -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
     <script>var basePath = ''</script>
-    <!-- Main Theme JS file    -->
-    <script src="js/theme.js"></script>
 
   </body>
 </html>

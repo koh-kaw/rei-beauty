@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <body style="padding-top: 72px;">
+
+    <section class="py-5">
+      <div class="container">
+
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb ps-0  justify-content-start">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="user-messages.html">Inbox</a></li>
+          <li class="breadcrumb-item active">チャット   </li>
+        </ol>
+        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center mb-4">
+          <h1 class="mb-3 mb-md-0 hero-heading mb-0"><%= @user.name %> とのチャット</h1>
+          <div><a class="btn btn-link ps-0 text-secondary" href="<%=business_users_rooms_path%>"><i class="fa fa-arrow-left me-2"></i> チャット一覧に戻る</a></div>
+        </div>
+
+
+        <!-- Chat Box-->
+        <div class="px-4 py-5">
+          <div class="row">
+          
+            <% @messages.each do |message| %>
+
+              <% if message.user %>
+                <div class="d-flex col-md-9 col-xl-7 ms-auto mb-3">
+                  <div class="me-3">
+                    <div class="bg-primary rounded p-4 mb-2">
+                      <p class="text-sm mb-0 text-white"><%= message.message %></p>
+                      <% if message.image.url.nil?%>
+                      <%else%>
+                      <p class="text-sm mb-0 text-white"><%= image_tag message.image.url %></p>
+                      <%end%>
+                      
+                      
+                    </div>
+                    <p class="small text-muted ms-3"><%= message.user.name %></p>
+                    <p class="small text-muted ms-3"><%= message.created_at.strftime('%Y/%m/%d %H:%M') %></p>
+                    <% if message.image.url.nil?%>
+                      <%else%>
+                      <p class="text-sm mb-0 text-white"><%= image_tag message.image.url %></p>
+                      <%end%>
+                  </div>
+                  <%= image_pack_tag "default_user_image.png", :class => "avatar avatar-border-white flex-shrink-0" %>
+                </div>
+            
+              <% else %>
+                <div class="d-flex col-md-9 col-xl-7 mb-3">
+                <%= image_pack_tag "default_user_image.png", :class => "avatar avatar-border-white flex-shrink-0" %>
+                  <div class="ms-3">
+                    <div class="bg-gray-200 rounded p-4 mb-2">
+                      <p class="text-sm mb-0"><%= message.message %></p>
+                    </div>
+                    <p class="small text-muted ms-3"><%= message.business_user.name %></p>
+                    <p class="small text-muted ms-3"><%= message.created_at.strftime('%Y/%m/%d %H:%M')  %></p>
+                  </div>
+                </div>
+
+              <% end %>
+
+            <% end %>
+
+
+        <!-- Typing area-->
+          <%= form_with model: [:business_users, @message], class:"bg-light rounded shadow-sm", url: business_users_message_path, local: true do |f| %>\
+            <div class="input-group">
+            <%= f.text_area :message, class:"form-control border-0 p-4 bg-light text-sm" %>        
+            <%= f.file_field :image, id: :image, class:"form-control border-0 p-4 bg-left text-sm" %>
+            
+            <%= f.hidden_field :room_id, value: @room.id %>
+            <%= f.submit "送信", class:"btn btn-link text-secondary" do %>
+              <i class="fa fa-paper-plane"></i>
+            <% end %>
+            </div>
+          <% end %>
+
+      </div>
+    </section>
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+  </body>
+</html>

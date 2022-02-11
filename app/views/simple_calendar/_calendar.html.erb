@@ -1,0 +1,69 @@
+<div class="simple-calendar">
+  <div class="calendar-heading">
+    <%= link_to t('simple_calendar.previous', default: 'Previous'), calendar.url_for_previous_view, remote: true %>
+    <span class="calendar-title"><%= t('date.month_names')[start_date.month] %> <%= start_date.year %></span>
+    <%= link_to t('simple_calendar.next', default: 'Next'), calendar.url_for_next_view %>
+    <% reservations = Reservation.reservations_after_three_month %>
+    <% off_businesses = OffBusiness.off_businesses_after_three_month %>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <!-- 追加 -->
+        <th>時間</th>
+        <% date_range.slice(0, 7).each do |day| %>
+          <th><%= t('date.abbr_day_names')[day.wday] %></th>
+        <% end %>
+      </tr>
+      
+    </thead>
+
+     <tbody>
+      <% date_range.each_slice(7) do |week| %>
+        <tr>
+          <td></td>
+          <% week.each do |day| %>
+            <%= content_tag :td, class: calendar.td_classes_for(day) do %>
+              <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(passed_block) %>
+                <% capture_haml(day, sorted_events.fetch(day, []), &passed_block) %>
+              <% else %>
+                <% passed_block.call day, sorted_events.fetch(day, []) %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tr>
+        <% times.each do |time| %>
+          <tr>
+            <td><%= time %></td>
+            <% week.each do |day| %>
+              <td>
+                <!-- 追加 -->
+                <!-- ここから -->
+                <% if check_reservation(reservations, day, time) %>
+                  <%= '☓' %>
+                <% elsif check_businessday(off_businesses, day, time) %>
+                  <!-- TODO: 削除リンク -->
+                    <%= '☓' %>
+                  
+                <% elsif check_dt(day, time) %>
+
+                  <%= '☓' %>
+                <% else %>
+                    <%= link_to new_business_user_off_business_path(off_day: day, off_time: time, business_user_id: @business_user.id) do %>
+                    <%= '○' %>
+                  <% end %>
+                <% end %>
+                <!-- ここまで -->
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+
+

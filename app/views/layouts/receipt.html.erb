@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  </head>
+
+  <body style="padding-top: 72px;">
+    <section class="py-5 p-print-0">
+      <div class="container">
+        <div class="row mb-4 d-print-none">
+          <div class="col-lg-6">
+            <!-- Breadcrumbs -->
+            <ol class="breadcrumb ps-0  justify-content-start">
+              <li class="breadcrumb-item"><a href="index.html">ホーム</a></li>
+              <li class="breadcrumb-item"><a href="user-account.html">予約</a></li>
+              <li class="breadcrumb-item active">領収書（<%= @reserve.id %>）   </li>
+            </ol>
+          </div>
+          <div class="col-lg-6 text-lg-end">
+            <!-- <button class="btn btn-primary me-2"><i class="far fa-file-pdf me-2"></i> PDFをダウンロード</button> -->
+            <button class="btn btn-primary me-2" onclick="window.print()"><i class="far fa-file-pdf me-22"></i> 印刷</button>
+          </div>
+        </div>
+        <div class="card border-0 shadow shadow-print-0">
+          <div class="card-header bg-gray-100 p-5 border-0 px-print-0">
+            <div class="row">
+              <div class="col-6 d-flex align-items-center"><h2>領収書</h2></div>
+              
+              <div class="col-6 text-end">
+                <h3 class="mb-0">領収書番号（<%= @reserve.id %>）</h3>
+                <p class="mb-0"><%= @reserve.day.strftime("%Y年%m月%d日") %></p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-5 p-print-0">
+            <div class="row mb-4">
+              <div class="col-sm-6 pe-lg-3">
+                
+                <h6 class="mb-1">株式会社 Re I</h6>
+                <p class="text-muted">〒160-0022 東京都新宿区新宿一丁目4番13号<br>溝呂木第2ビル50D</p>
+              </div>
+
+              <div class="col-sm-6 ps-lg-4">
+                
+                <h6 class="mb-1"><%= @user.name %> 様</h6>
+                <p class="text-muted"><%= @user.postal_code %> <%= JpPrefecture::Prefecture.find(code: @user.postal_code).try(:name) %> <%= @reserve.city %><br><%= @reserve.street %><br><strong><%= @user.family_name %> <%= @user.first_name %></strong></p>
+              </div>
+            </div>
+
+            <div class="row mb-5">
+              <div class="col-md-6 pe-lg-3 text-sm">
+                <div class="row">
+                  <div class="col-6 text-uppercase text-muted">領収金額</div>
+                  <div class="col-6 text-end"><strong>¥<%= @post.total_price.to_s(:delimited) %></strong></div>
+                </div>
+                <div class="row">
+                  <div class="col-6 text-uppercase text-muted">ご利用日時</div>
+                  <div class="col-6 text-end"><%= @reserve.day.strftime("%Y年%m月%d日") %> <%= @reserve.time.strftime("%H時%M分") %></div>
+                </div>
+
+            </div>
+
+
+            <div class="table-responsive text-sm mb-5">
+              <table class="table table-striped">
+                <thead class="bg-gray-200">
+                  <tr class="border-0">
+                    <th class="center">ご利用料金内訳</th>
+                    
+                    
+                    <th class="text-end"></th>
+                    
+                    
+                  </tr>
+                </thead>
+                
+                <tbody>
+                  <tr>
+                    <td class="fw-bold">基本料金</td>
+                    <td class="text-end">¥<%= @post.price.to_s(:delimited) %></td>
+                  </tr>
+
+                  <tr>
+                    <td class="fw-bold">手数料</td>
+                    <td class="text-end">¥<%= @post.service_fee.to_s(:delimited) %></td>
+                  </tr>
+
+                  <tr>
+                    <td class="fw-bold">訪問料</td>
+                    <td class="text-end">¥1,000</td>
+                  </tr>
+
+                  <tr>
+                    <td class="fw-bold">消費税(10%)</td>
+                    <% @tax_off_price = @post.price + @post.service_fee + 1000 %>
+                    <% @tax = @tax_off_price * 0.1%>
+                    <td class="text-end">¥<%= @tax.floor.to_s(:delimited) %></td>
+                  </tr>
+
+                  <tr>
+                    <td class="fw-bold">合計</td>
+                    <td class="text-end">¥<%= @post.total_price.to_s(:delimited) %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-7 col-lg-5 col-xl-4 ms-auto">
+              <% @price_trans = @post.price + 1000 %>
+              <% @price2 = @price_trans * 1.1 %>
+              <p>但し　ご利用料金・訪問料として <strong><%= @price2.floor.to_s(:delimited) %>円</strong> を正に領収しました。</p>
+              <% @price3 =  @post.service_fee * 1.1 %>
+              <p>但し　Re I beauty手数料として <strong><%= @price3.floor.to_s(:delimited) %>円</strong> を正に領収しました。</p>
+                
+              </div>
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+  </body>
+</html>

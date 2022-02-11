@@ -5,3 +5,10 @@
 <% else %>
   <p>We're contacting you to notify you that your email has been changed to <%= @resource.email %>.</p>
 <% end %>
+
+
+
+<p><%= @email %>へのメールアドレスが変更されました。</p>
+<p>下記のリンクからメールアドレスを確認してください。</p>
+
+<p><%= link_to 'メールアドレスを確認する', confirmation_url(@resource, confirmation_token: @token) %></p>

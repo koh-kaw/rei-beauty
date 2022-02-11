@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>FAQ</title>
+  </head>
+
+  <body style="padding-top: 72px;">
+    
+    <!-- Hero Section-->
+    <section class="hero py-5 py-lg-7">
+      <div class="container position-relative">
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb ps-0  justify-content-center">
+          <li class="breadcrumb-item active">ビューティシャン向け                         </li>
+        </ol>
+        <h1 class="hero-heading">ルールとマナー</h1>
+        <div class="row">
+          <div class="col-xl-8 mx-auto"><p class="text-muted">Re I beautyのご利用方法に関するよくある質問をまとめました。</p></div>
+        </div>
+      </div>
+    </section>
+    <!-- FAQ-->
+    <section class="py-6">
+      <div class="container">
+        <div class="py-4">
+          <h2 class="mb-5 text-primary">ご利用の前に</h2>
+          <div class="row">
+            <div class="col-md-6">
+              <h5>Re I beautyはどのようなサービスですか？</h5>
+              <p class="text-muted mb-4">Re I beautyとは弊社システムにご登録いただいた利用者とビューティシャンが直接やり取りをし、個別に契約を結んでいただくためのマッチングサービスとなっております。</p>
+              <p class="text-muted mb-4">Re I beautyはあらゆるジャンルの美容施術を受けることができます。まずは登録をしてみましょう！</p>
+              <p class="text-muted mb-4">※弊社と施術者間に雇用関係はありません。弊社の定める面接基準を満たした方のみが、個人事業主としてRe I beautyに登録できるシステムとなっております。</p>
+              
+              <h5>???</h5>
+              <p class="text-muted mb-4">東京23区内の施術エリアのご利用が可能となっております。(※ビューティシャンの居住区とは関係ありません。)東京23区外、または東京都外については随時拡大予定となっております。</p>
+
+              <h5>支払い情報について</h5>
+              <p class="text-muted mb-4">現在Re I beautyでは、すべての予約申請から決済完了までサイト内で可能となっております。<br>
+              アプリはリリースまでしばらくお待ちください。</p>
+
+              <h5>???</h5>
+              <p class="text-muted mb-4">Re I beautyでは利用者登録は1人1アカウントでお願い致します。<br>
+              ※アカウントを複数所有し、予約を二重取得することなどは禁止されています。ご注意ください。</p>
+
+            </div>
+            <div class="col-md-6">
+              
+              <h5>登録料について</h5>
+              <p class="text-muted mb-4">Re I beautyではすべての登録料、年会費などは無料となっております。</p>
+              
+              <h5>施術で使用する道具や備品について</h5>
+              <p class="text-muted mb-4">こちらはビューティシャンと応相談の場合で原則ビューティシャンの持参となっております。<br>
+                （気になる方はビューティシャンに直接やり取りの際にご確認ください。）<br>
+                <%= link_to "コロナ対策", "/pages/covid" %>などで必要なマスクやアルコールなどもご自身での準備を宜しくお願い致します。</p>
+              
+              <h5>交通費、訪問にかかる費用について</h5>
+              <p class="text-muted mb-4">Re I beautyでは訪問料と称して1件の訪問につき一律1000円を利用者に頂いています。<br>
+                詳細は<%= link_to "利用規約", "/pages/terms" %>又は<%= link_to "Re I beautyの料金", "/pages/pricing" %>をご確認ください。</p>
+
+              <h5>???</h5>
+              <p class="text-muted mb-4">Re I beautyでは利用者の個人情報に触れる機会がございます。<%= link_to "詳細はこちら", "/pages/terms" %> をご確認ください。<br>
+              ※SNS等の違反が何らかの形で発覚した場合はRe I beautyのご利用が難しくなることもございます。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- Footer-->
+
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }    
+      // to avoid CORS issues when viewing using file:// protocol, using the demo URL for the SVG sprite
+      // use your own URL in production, please :)
+      // https://demo.bootstrapious.com/directory/1-0/icons/orion-svg-sprite.svg
+      //- injectSvgSprite('${path}icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
+      
+    </script>
+
+    <!-- Swiper Carousel                       -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
+    <script>var basePath = ''</script>
+
+  </body>
+</html>

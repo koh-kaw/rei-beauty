@@ -6,22 +6,22 @@
     <div class="col-md-8 col-lg-6 col-xl-5 d-flex align-items-center">
       <div class="w-100 py-5 px-md-5 px-xxl-6 position-relative">
         <div class="mb-4"><%= link_to image_pack_tag("media/images/logo.svg", alt:"Re I beauty"), "/", class:"img-fluid mb-4", style:"max-width: 4rem;"%>
-          <h2>施術者ログイン</h2>
+          <h2>ビューティシャンログイン（施術者）</h2>
         </div>
         
           <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
           <form class="form-validate">
             <div class="field mb-4">
-              <%= f.label :email, class:"form-label" %><br />
+              <%= f.label :email, class:"form-label" %><span class="form-label">(半角で入力)</span>
               <%= f.email_field :email, autofocus: true, autocomplete: "email", class:"form-control" %>
             </div>
 
           <div class="field mb-4">
             <div class="row">
               <div class="col">
-                <%= f.label :password, class:"form-label" %><br />
+                <%= f.label :password, class:"form-label" %><span class="form-label">(半角で入力)</span>
               </div>
-              <div class="col-auto"><a class="form-text small text-secondary" href="/">パスワードを再設定</a></div>
+              <div class="col-auto"><%= link_to "パスワード再設定", new_password_path(resource_name), class: "form-text small text-secondary"%></div>
             </div>
             <%= f.password_field :password, autocomplete: "current-password", class:"form-control" %>
           </div>
@@ -30,25 +30,19 @@
             <div class="field mb-4">
               <div class="form-check">
                 <%= f.check_box :remember_me, class:"form-check-input" %>
-                <%= f.label :remember_me, class:"form-check-label text-muted" %>
+                <%= f.label :remember_me, "ログイン情報を保存", class:"form-check-label text-muted" %>
               </div>
             </div>
           <% end %>
 
           <!-- Submit-->
             <div class="actions d-grid">
-              <%= f.submit "Log in", class:"btn btn-lg btn-primary text-secondary" %>
+              <%= f.submit "ログイン", class:"btn btn-lg btn-primary text-secondary" %>
             </div>
           <% end %>
           <%= render "business_users/shared/links" %>
           
-          <hr class="my-3 hr-text letter-spacing-2" data-content="OR">
-          <div class="d-grid gap-2">
-            <button class="btn btn btn-outline-primary btn-social"><i class="fa-2x fa-facebook-f fab btn-social-icon"> </i>Connect <span class="d-none d-sm-inline">with Facebook</span></button>
-            <button class="btn btn btn-outline-muted btn-social"><i class="fa-2x fa-google fab btn-social-icon"> </i>Connect <span class="d-none d-sm-inline">with Google</span></button>
-          </div>
-          <hr class="my-4">
-          <p class="text-center"><small class="text-muted text-center">Don't have an account yet? <a class="text-secondary" href="signup.html">Sign Up                </a></small></p>
+          
         </form><a class="close-absolute me-md-5 me-xl-6 pt-5" href="/"> 
           <svg class="svg-icon w-3rem h-3rem">
             <use xlink:href="#close-1"> </use>
@@ -87,22 +81,10 @@
   injectSvgSprite('https://demo.bootstrapious.com/directory/1-4/icons/orion-svg-sprite.svg'); 
   
 </script>
-<!-- jQuery-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<!-- Bootstrap JS bundle - Bootstrap + PopperJS-->
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Magnific Popup - Lightbox for the gallery-->
-<script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-<!-- Smooth scroll-->
-<script src="vendor/smooth-scroll/smooth-scroll.polyfills.min.js"></script>
-<!-- Bootstrap Select-->
-<script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
-<!-- Object Fit Images - Fallback for browsers that don't support object-fit-->
-<script src="vendor/object-fit-images/ofi.min.js"></script>
+
 <!-- Swiper Carousel                       -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script>
 <script>var basePath = ''</script>
-<!-- Main Theme JS file    -->
-<script src="js/theme.js"></script>
+
   </body>
 </html>

@@ -1,0 +1,17 @@
+.aaa,
+.bbb {
+  display: block;
+}
+.bbb {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 100px;
+}
+.th-sticky_wrap {
+  height: 200 px;
+  overflow-y: scroll;
+}
+
+.ccc {
+  color: red;
+}

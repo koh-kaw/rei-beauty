@@ -61,7 +61,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
     # mailer setting
-    config.action_mailer.default_url_options = { host: '160.16.132.91', port: 3000 }
+    config.action_mailer.default_url_options = { host: 'reibeauty.jp', port: 3000 }
     # config.action_mailer.default_url_options = { host: 'localhost:3000' }
     config.action_mailer.raise_delivery_errors = true
     config.action_mailer.delivery_method = :smtp
